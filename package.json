@@ -1,0 +1,27 @@
+{
+  "name": "deveditor-ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for @deveditor/ui component library",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish"
+  },
+  "packageManager": "pnpm@10.23.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goshant-meher/deveditor-ui"
+  },
+  "author": "Goshant Meher",
+  "license": "MIT"
+}
