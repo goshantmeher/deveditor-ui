@@ -1,11 +1,9 @@
 name: CI
 
-# Run CI on every push and every PR (any branch). Publish only on push to main.
+# Run CI on every push (any branch). One run per push; PRs show the same check via the push that updates them.
+# Publish only on push to main.
 on:
   push:
-    # No branches filter = run on push to any branch (main, feat/*, fix/*, etc.)
-  pull_request:
-    # No branches filter = run when a PR is opened/updated targeting any branch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -46,7 +44,7 @@ jobs:
   publish:
     name: Version & publish (npm)
     needs: ci
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
