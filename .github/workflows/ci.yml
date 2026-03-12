@@ -59,14 +59,17 @@ jobs:
         run: bash scripts/check-changesets.sh
 
   main_only_from_master:
-    name: Main only from master
+    name: Main only from allowed branches
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
     steps:
-      - name: Ensure only master can merge to main
+      - name: Ensure only master or changeset-release/main can merge to main
         run: |
-          if [ "${{ github.head_ref }}" != "master" ]; then
-            echo "::error::Only the branch 'master' can be merged into 'main'. This PR is from '${{ github.head_ref }}'."
+          ALLOWED="master changeset-release/main"
+          if echo "$ALLOWED" | grep -qw "${{ github.head_ref }}"; then
+            echo "Branch '${{ github.head_ref }}' is allowed to merge into main."
+          else
+            echo "::error::Only 'master' or 'changeset-release/main' can be merged into 'main'. This PR is from '${{ github.head_ref }}'."
             exit 1
           fi
 
