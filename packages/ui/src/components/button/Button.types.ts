@@ -7,28 +7,20 @@ export interface ButtonVariantProps {
    * The visual style of the button.
    * @default "default"
    */
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link"
-    | null;
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | null;
 
   /**
    * The size of the button.
    * @default "default"
    */
-  size?: "default" | "sm" | "lg" | "icon" | null;
+  size?: 'default' | 'sm' | 'lg' | 'icon' | null;
 }
 
 /**
  * Props for the Button component.
  */
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    ButtonVariantProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonVariantProps {
   /**
    * When true, the button renders its child as the root element (Radix Slot pattern).
    * Useful for rendering as `<a>`, `<Link>`, or custom elements.

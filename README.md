@@ -37,10 +37,12 @@ A **framework-agnostic** React component library featuring:
 
 ## 📚 Documentation
 
-| Document | Description |
-| --- | --- |
+| Document                               | Description                                          |
+| -------------------------------------- | ---------------------------------------------------- |
 | [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) | Complete design system & component development rules |
-| [TODO.md](./TODO.md) | Phase-wise development roadmap |
+| [TODO.md](./TODO.md)                   | Phase-wise development roadmap                       |
+
+[![Live Docs](https://img.shields.io/badge/Storybook-Live%20Docs-ff4785?logo=storybook)](https://goshantmeher.github.io/deveditor-ui/)
 
 ---
 

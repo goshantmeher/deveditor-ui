@@ -1,6 +1,6 @@
 # DevEditor UI — Core UI Package Roadmap
 
-> **Repository:** `goshant-meher/deveditor-ui`
+> **Repository:** `goshantmeher/deveditor-ui`
 > **Goal:** Extract, standardize, and publish a shared UI component library used by `deveditor.io` (and future apps like the local store app) — with world-class CI/CD, testing, and documentation.
 
 ---
@@ -9,28 +9,28 @@
 
 > **Goal:** Create the public repo and the automated publishing pipeline.
 
-- [ ] **Task 1.1** — Initialize the repo structure
+- [x] **Task 1.1** — Initialize the repo structure
   - Set up `package.json` with proper metadata (name, description, keywords, license, repository)
   - Configure TypeScript (`tsconfig.json`) with strict settings
   - Add `.editorconfig`, `.prettierrc`, `.eslintrc` for code quality
 
-- [ ] **Task 1.2** — Set up `tsup` for TypeScript bundling
+- [x] **Task 1.2** — Set up `tsup` for TypeScript bundling
   - Configure dual output: **ESM** and **CJS**
   - Generate `.d.ts` declaration files
   - Tree-shakeable exports via `package.json` `exports` field
 
-- [ ] **Task 1.3** — Configure Changesets for versioning
+- [x] **Task 1.3** — Configure Changesets for versioning
   - Install `@changesets/cli`
   - Set up `.changeset/config.json`
   - Define changelog generation format
 
-- [ ] **Task 1.4** — Write `.github/workflows/ci.yml`
-  - [ ] Linting (`eslint`) & type checking (`tsc --noEmit`)
-  - [ ] Build verification (`tsup` completes without errors)
-  - [ ] Auto-publish to NPM on merge to `main` (using Changesets action)
-  - [ ] Cache `node_modules` for faster CI runs
+- [x] **Task 1.4** — Write `.github/workflows/ci.yml`
+  - [x] Linting (`eslint`) & type checking (`tsc --noEmit`)
+  - [x] Build verification (`tsup` completes without errors)
+  - [x] Auto-publish to NPM on merge to `main` (using Changesets action)
+  - [x] Cache `node_modules` for faster CI runs
 
-- [ ] **Task 1.5** — Set up Storybook + GitHub Pages deployment
+- [x] **Task 1.5** — Set up Storybook + GitHub Pages deployment
   - Install Storybook with React + Vite builder
   - Write a GitHub Actions workflow to deploy Storybook to GitHub Pages
   - Add a "Live Docs" badge to README linking to the Storybook site
@@ -94,28 +94,33 @@
 > **Goal:** Move the 60+ components from `deveditor.io` to the new package without breaking anything.
 
 ### Batch 1 — Basics (target: `v1.0.0`)
+
 - [ ] **Task 4.1** — Migrate foundational components:
   - `Button`, `Input`, `Card`, `Badge`
   - Publish `v1.0.0` to NPM
 
 ### Batch 1 Integration
-- [ ] **Task 4.2** — Install `@goshant-meher/deveditor-ui` in `deveditor.io`
+
+- [ ] **Task 4.2** — Install `@goshantmeher/deveditor-ui` in `deveditor.io`
   - Write a Codemod / regex script to update imports for the 4 migrated components
   - Verify all 60 tools still render correctly
 
 ### Batch 2 — Complex Components
+
 - [ ] **Task 4.3** — Migrate:
   - `Dialog` / `Modal`, `Tabs`, `Select`, `Dropdown Menu`
   - Update `deveditor.io` imports
   - Publish next minor version
 
 ### Batch 3 — Layout & Advanced
+
 - [ ] **Task 4.4** — Migrate:
   - High-level layout components (e.g., `ToolLayout`, `SEOContent`)
   - Complex tool-specific wrappers (e.g., code editors, preview panels)
   - Publish next minor version
 
 ### Final Audit
+
 - [ ] **Task 4.5** — Remove the `components/ui` folder from `deveditor.io`
   - Confirm **zero** local UI component references remain
   - Run full E2E validation on `deveditor.io`
@@ -151,12 +156,12 @@
 
 ## 📌 Notes & Decisions
 
-| Decision                    | Rationale                                                                 |
-| --------------------------- | ------------------------------------------------------------------------- |
-| **tsup** over Rollup/Webpack | Fastest DX, zero-config for most cases, built-in DTS generation          |
-| **Changesets** over manual   | Automated semver, changelogs, and NPM publishing in CI                   |
-| **Wrapper pattern**          | Decouples internal Shadcn/Radix implementation from consumer API         |
-| **Tailwind Preset export**   | Single source of truth for design tokens across all apps                 |
+| Decision                     | Rationale                                                                  |
+| ---------------------------- | -------------------------------------------------------------------------- |
+| **tsup** over Rollup/Webpack | Fastest DX, zero-config for most cases, built-in DTS generation            |
+| **Changesets** over manual   | Automated semver, changelogs, and NPM publishing in CI                     |
+| **Wrapper pattern**          | Decouples internal Shadcn/Radix implementation from consumer API           |
+| **Tailwind Preset export**   | Single source of truth for design tokens across all apps                   |
 | **Incremental migration**    | Zero-downtime migration; each batch is independently deployable & testable |
 
 ---

@@ -14,39 +14,40 @@
 4. [Component Anatomy](#-component-anatomy)
 5. [Component Development Rules](#-component-development-rules)
 6. [API Design Contract](#-api-design-contract)
-7. [Customization Architecture](#-customization-architecture)
-8. [Styling Rules](#-styling-rules)
-9. [Accessibility Standards](#-accessibility-standards)
-10. [Testing Requirements](#-testing-requirements)
-11. [Storybook Standards](#-storybook-standards)
-12. [Internationalization (i18n)](#-internationalization-i18n)
-13. [SSR & Next.js Compatibility](#-ssr--nextjs-compatibility)
-14. [Performance Budget](#-performance-budget)
-15. [Documentation Requirements](#-documentation-requirements)
-16. [Git & Versioning Protocol](#-git--versioning-protocol)
-17. [Checklist: Before You Merge](#-checklist-before-you-merge)
+7. [Type Safety Requirements](#-type-safety-requirements)
+8. [Customization Architecture](#-customization-architecture)
+9. [Styling Rules](#-styling-rules)
+10. [Accessibility Standards](#-accessibility-standards)
+11. [Testing Requirements](#-testing-requirements)
+12. [Storybook Standards](#-storybook-standards)
+13. [Internationalization (i18n)](#-internationalization-i18n)
+14. [SSR & Next.js Compatibility](#-ssr--nextjs-compatibility)
+15. [Performance Budget](#-performance-budget)
+16. [Documentation Requirements](#-documentation-requirements)
+17. [Git & Versioning Protocol](#-git--versioning-protocol)
+18. [Checklist: Before You Merge](#-checklist-before-you-merge)
 
 ---
 
 ## 🧰 Tech Stack & Architecture
 
-| Layer              | Technology                          | Purpose                                    |
-| ------------------ | ----------------------------------- | ------------------------------------------ |
-| **Build System**   | Vite                                | Dev server, HMR, optimized builds          |
-| **Bundler**        | tsup                                | Library bundling (ESM + CJS + DTS)         |
-| **Framework**      | React 18+                           | Component framework                        |
-| **Language**       | TypeScript (strict mode)            | Type safety across all packages            |
-| **Styling**        | Tailwind CSS v4 + CSS Variables     | Utility-first styling with design tokens   |
-| **Primitives**     | Radix UI                            | Headless, accessible component primitives  |
-| **Component Base** | shadcn/ui                           | Styled Radix wrappers (internal only)      |
-| **Icons**          | Lucide React                        | Consistent, tree-shakeable icon library    |
-| **Monorepo**       | pnpm workspaces + Turborepo         | Package management and task orchestration   |
-| **Docs**           | Storybook 8+                        | Interactive component documentation        |
-| **Unit Tests**     | Vitest + React Testing Library      | Component logic & integration tests        |
-| **Visual Tests**   | Playwright                          | Screenshot regression & E2E testing        |
-| **A11y Tests**     | axe-core + Playwright               | Automated accessibility auditing           |
-| **CI/CD**          | GitHub Actions                      | Lint, test, build, publish pipeline        |
-| **Versioning**     | Changesets                           | Automated semver, changelogs, NPM publish  |
+| Layer              | Technology                      | Purpose                                   |
+| ------------------ | ------------------------------- | ----------------------------------------- |
+| **Build System**   | Vite                            | Dev server, HMR, optimized builds         |
+| **Bundler**        | tsup                            | Library bundling (ESM + CJS + DTS)        |
+| **Framework**      | React 18+                       | Component framework                       |
+| **Language**       | TypeScript (strict mode)        | Type safety across all packages           |
+| **Styling**        | Tailwind CSS v4 + CSS Variables | Utility-first styling with design tokens  |
+| **Primitives**     | Radix UI                        | Headless, accessible component primitives |
+| **Component Base** | shadcn/ui                       | Styled Radix wrappers (internal only)     |
+| **Icons**          | Lucide React                    | Consistent, tree-shakeable icon library   |
+| **Monorepo**       | pnpm workspaces + Turborepo     | Package management and task orchestration |
+| **Docs**           | Storybook 8+                    | Interactive component documentation       |
+| **Unit Tests**     | Vitest + React Testing Library  | Component logic & integration tests       |
+| **Visual Tests**   | Playwright                      | Screenshot regression & E2E testing       |
+| **A11y Tests**     | axe-core + Playwright           | Automated accessibility auditing          |
+| **CI/CD**          | GitHub Actions                  | Lint, test, build, publish pipeline       |
+| **Versioning**     | Changesets                      | Automated semver, changelogs, NPM publish |
 
 ### Architecture Principle: The Wrapper Pattern
 
@@ -114,10 +115,10 @@ deveditor-ui/
 
 ### Key Packages
 
-| Package                    | Scope             | Description                                |
-| -------------------------- | ----------------- | ------------------------------------------ |
-| `@deveditor/ui`            | `packages/ui`     | All React components, hooks, and utilities |
-| `@deveditor/tailwind-config` | `packages/tailwind-config` | Shared Tailwind preset and plugin |
+| Package                      | Scope                      | Description                                |
+| ---------------------------- | -------------------------- | ------------------------------------------ |
+| `@deveditor/ui`              | `packages/ui`              | All React components, hooks, and utilities |
+| `@deveditor/tailwind-config` | `packages/tailwind-config` | Shared Tailwind preset and plugin          |
 
 ---
 
@@ -131,83 +132,83 @@ We use the **OKLCH** color space for perceptually uniform colors across light an
 
 #### Semantic Tokens
 
-| Token                  | Usage                                              |
-| ---------------------- | -------------------------------------------------- |
-| `--background`         | Page / app background                              |
-| `--foreground`         | Primary text color                                 |
-| `--card`               | Elevated surface backgrounds (cards, modals)       |
-| `--card-foreground`    | Text on card surfaces                              |
-| `--popover`            | Popover / dropdown backgrounds                     |
-| `--popover-foreground` | Text in popovers                                   |
-| `--muted`              | Subtle backgrounds (empty states, disabled areas)  |
-| `--muted-foreground`   | Secondary text, placeholders, hints                |
-| `--border`             | Dividers, card edges. Use `border-border/50` soft  |
-| `--input`              | Input field borders                                |
-| `--ring`               | Focus ring color                                   |
-| `--accent`             | Interactive hover backgrounds                      |
-| `--accent-foreground`  | Text on accent backgrounds                         |
-| `--destructive`        | Destructive actions, errors                        |
+| Token                  | Usage                                             |
+| ---------------------- | ------------------------------------------------- |
+| `--background`         | Page / app background                             |
+| `--foreground`         | Primary text color                                |
+| `--card`               | Elevated surface backgrounds (cards, modals)      |
+| `--card-foreground`    | Text on card surfaces                             |
+| `--popover`            | Popover / dropdown backgrounds                    |
+| `--popover-foreground` | Text in popovers                                  |
+| `--muted`              | Subtle backgrounds (empty states, disabled areas) |
+| `--muted-foreground`   | Secondary text, placeholders, hints               |
+| `--border`             | Dividers, card edges. Use `border-border/50` soft |
+| `--input`              | Input field borders                               |
+| `--ring`               | Focus ring color                                  |
+| `--accent`             | Interactive hover backgrounds                     |
+| `--accent-foreground`  | Text on accent backgrounds                        |
+| `--destructive`        | Destructive actions, errors                       |
 
 #### Brand Tokens
 
-| Token                  | Value (OKLCH)                         | Usage                         |
-| ---------------------- | ------------------------------------- | ----------------------------- |
-| `--brand`              | `oklch(0.585 0.233 277.117)` (Indigo) | Primary accent, CTAs          |
-| `--brand-foreground`   | `white`                               | Text on brand surfaces        |
-| `--success`            | Emerald                               | Positive states, confirmation |
-| `--warning`            | Amber                                 | Caution, attention needed     |
-| `--info`               | Sky blue                              | Informational, tips           |
-| `--destructive`        | Rose                                  | Error, danger, delete         |
+| Token                | Value (OKLCH)                         | Usage                         |
+| -------------------- | ------------------------------------- | ----------------------------- |
+| `--brand`            | `oklch(0.585 0.233 277.117)` (Indigo) | Primary accent, CTAs          |
+| `--brand-foreground` | `white`                               | Text on brand surfaces        |
+| `--success`          | Emerald                               | Positive states, confirmation |
+| `--warning`          | Amber                                 | Caution, attention needed     |
+| `--info`             | Sky blue                              | Informational, tips           |
+| `--destructive`      | Rose                                  | Error, danger, delete         |
 
 #### Accent Palette (Tailwind Classes)
 
-| Color                | Class Base     | Usage                                    |
-| -------------------- | -------------- | ---------------------------------------- |
-| Indigo               | `indigo-500`   | Primary actions, branding, CTAs          |
-| Emerald              | `emerald-500`  | Success, privacy, positive states        |
-| Amber                | `amber-500`    | Warnings, speed indicators               |
-| Rose                 | `rose-500`     | Errors, destructive actions              |
-| Violet               | `violet-500`   | AI features, special/premium states      |
-| Sky                  | `sky-500`      | Informational, technical details         |
+| Color   | Class Base    | Usage                               |
+| ------- | ------------- | ----------------------------------- |
+| Indigo  | `indigo-500`  | Primary actions, branding, CTAs     |
+| Emerald | `emerald-500` | Success, privacy, positive states   |
+| Amber   | `amber-500`   | Warnings, speed indicators          |
+| Rose    | `rose-500`    | Errors, destructive actions         |
+| Violet  | `violet-500`  | AI features, special/premium states |
+| Sky     | `sky-500`     | Informational, technical details    |
 
 ### Typography
 
-| Token             | Font Family    | Usage                                |
-| ----------------- | -------------- | ------------------------------------ |
-| `--font-sans`     | Quicksand      | All body text, headings, UI labels   |
-| `--font-mono`     | Geist Mono     | Code, hex values, data output        |
+| Token         | Font Family | Usage                              |
+| ------------- | ----------- | ---------------------------------- |
+| `--font-sans` | Quicksand   | All body text, headings, UI labels |
+| `--font-mono` | Geist Mono  | Code, hex values, data output      |
 
 #### Scale
 
-| Name      | Size       | Usage                                      |
-| --------- | ---------- | ------------------------------------------ |
-| `tiny`    | `0.625rem` | Compact UI labels inside tools             |
-| `label`   | `0.6875rem`| Form labels, secondary info                |
-| `sm`      | `0.875rem` | Body small, card descriptions              |
-| `base`    | `1rem`     | Default body text                          |
-| `lg`      | `1.125rem` | Emphasized body, descriptions              |
-| `xl`      | `1.25rem`  | Card titles, section subheads              |
-| `2xl`     | `1.5rem`   | Section headings                           |
-| `3xl`     | `1.875rem` | Page section titles                        |
-| `4xl+`    | `2.25rem+` | Hero headings                              |
+| Name    | Size        | Usage                          |
+| ------- | ----------- | ------------------------------ |
+| `tiny`  | `0.625rem`  | Compact UI labels inside tools |
+| `label` | `0.6875rem` | Form labels, secondary info    |
+| `sm`    | `0.875rem`  | Body small, card descriptions  |
+| `base`  | `1rem`      | Default body text              |
+| `lg`    | `1.125rem`  | Emphasized body, descriptions  |
+| `xl`    | `1.25rem`   | Card titles, section subheads  |
+| `2xl`   | `1.5rem`    | Section headings               |
+| `3xl`   | `1.875rem`  | Page section titles            |
+| `4xl+`  | `2.25rem+`  | Hero headings                  |
 
 ### Spacing & Radii
 
-| Token        | Value     | Usage                    |
-| ------------ | --------- | ------------------------ |
-| `--radius`   | `0.75rem` | Default border radius    |
-| `--radius-sm`| `0.5rem`  | Buttons, inputs          |
-| `--radius-lg`| `1rem`    | Cards, modals            |
-| `--radius-xl`| `1.5rem`  | Feature cards, hero CTAs |
+| Token         | Value     | Usage                    |
+| ------------- | --------- | ------------------------ |
+| `--radius`    | `0.75rem` | Default border radius    |
+| `--radius-sm` | `0.5rem`  | Buttons, inputs          |
+| `--radius-lg` | `1rem`    | Cards, modals            |
+| `--radius-xl` | `1.5rem`  | Feature cards, hero CTAs |
 
 ### Shadows
 
-| Name            | Usage                                   |
-| --------------- | --------------------------------------- |
-| `shadow-sm`     | Subtle elevation (inputs, small cards)  |
-| `shadow-md`     | Standard cards, dropdowns               |
-| `shadow-lg`     | Modals, popovers, floating elements     |
-| `shadow-glow`   | Brand-colored glow effect on CTAs       |
+| Name          | Usage                                  |
+| ------------- | -------------------------------------- |
+| `shadow-sm`   | Subtle elevation (inputs, small cards) |
+| `shadow-md`   | Standard cards, dropdowns              |
+| `shadow-lg`   | Modals, popovers, floating elements    |
+| `shadow-glow` | Brand-colored glow effect on CTAs      |
 
 ---
 
@@ -227,14 +228,14 @@ packages/ui/src/components/button/
 
 ### File Responsibilities
 
-| File                | Contents                                                      |
-| ------------------- | ------------------------------------------------------------- |
-| `[Component].tsx`   | React component with `forwardRef`, display name, JSDoc        |
-| `[Component].types.ts` | Props interface extending HTML/Radix types, variant types  |
-| `[Component].stories.tsx` | All visual states, variants, edge cases as stories     |
-| `[Component].test.tsx` | Unit tests: rendering, props, events, a11y assertions     |
-| `[Component].spec.ts`  | Playwright: visual regression screenshots, interaction E2E |
-| `index.ts`          | Named re-exports: `export { Button } from './Button'`        |
+| File                      | Contents                                                   |
+| ------------------------- | ---------------------------------------------------------- |
+| `[Component].tsx`         | React component with `forwardRef`, display name, JSDoc, inline comments for non-obvious logic |
+| `[Component].types.ts`    | Props interface extending HTML/Radix types, variant types  |
+| `[Component].stories.tsx` | All visual states, variants, edge cases as stories         |
+| `[Component].test.tsx`    | Unit tests: rendering, props, events, a11y assertions      |
+| `[Component].spec.ts`     | Playwright: visual regression screenshots, interaction E2E |
+| `index.ts`                | Named re-exports: `export { Button } from './Button'`      |
 
 ---
 
@@ -249,10 +250,12 @@ Every component must use `React.forwardRef` to allow parent components to access
 ```tsx
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
-    return <button ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+    return (
+      <button ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />
+    );
   }
 );
-Button.displayName = "Button";
+Button.displayName = 'Button';
 ```
 
 ### Rule 2: Set `displayName` — Always
@@ -273,26 +276,26 @@ Use `class-variance-authority` (cva) for defining component variants. This ensur
 
 ```tsx
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2",
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2',
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        default: 'h-10 px-4 py-2',
+        sm: 'h-9 rounded-md px-3',
+        lg: 'h-11 rounded-md px-8',
+        icon: 'h-10 w-10',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
     },
   }
 );
@@ -338,6 +341,7 @@ For components with multiple related parts (e.g., `Tabs`, `Dialog`, `Select`), u
 ### Rule 10: Zero Runtime CSS-in-JS
 
 We do **not** use runtime CSS-in-JS (styled-components, Emotion, etc.). All styling is done via:
+
 - Tailwind CSS utility classes
 - CSS custom properties (design tokens)
 - `cn()` utility for conditional class merging
@@ -350,14 +354,14 @@ We do **not** use runtime CSS-in-JS (styled-components, Emotion, etc.). All styl
 
 ### Naming Conventions
 
-| Type               | Convention                           | Example                          |
-| ------------------ | ------------------------------------ | -------------------------------- |
-| Components         | PascalCase                           | `Button`, `DialogContent`        |
-| Props interfaces   | `[Component]Props`                   | `ButtonProps`, `DialogProps`     |
-| Variant types      | `[Component]Variant`                 | `ButtonVariant`                  |
-| Event handlers     | `on[Action]`                         | `onClick`, `onValueChange`      |
-| Boolean props      | `is[State]` or adjective             | `isDisabled`, `loading`          |
-| Render props       | `render[Element]`                    | `renderIcon`, `renderBadge`     |
+| Type             | Convention               | Example                      |
+| ---------------- | ------------------------ | ---------------------------- |
+| Components       | PascalCase               | `Button`, `DialogContent`    |
+| Props interfaces | `[Component]Props`       | `ButtonProps`, `DialogProps` |
+| Variant types    | `[Component]Variant`     | `ButtonVariant`              |
+| Event handlers   | `on[Action]`             | `onClick`, `onValueChange`   |
+| Boolean props    | `is[State]` or adjective | `isDisabled`, `loading`      |
+| Render props     | `render[Element]`        | `renderIcon`, `renderBadge`  |
 
 ### Props Design Principles
 
@@ -372,10 +376,54 @@ We do **not** use runtime CSS-in-JS (styled-components, Emotion, etc.). All styl
 Every component **must** export from its `index.ts`:
 
 ```tsx
-export { Button } from './Button';              // The component
+export { Button } from './Button'; // The component
 export type { ButtonProps } from './Button.types'; // The props type
-export { buttonVariants } from './Button';         // The variant helper (if cva used)
+export { buttonVariants } from './Button'; // The variant helper (if cva used)
 ```
+
+---
+
+## 🔒 Type Safety Requirements
+
+> **We require fully type-safe code.** All packages use TypeScript in strict mode. No escape hatches without justification.
+
+### Compiler & Config
+
+- **Strict mode** is enabled in `tsconfig.base.json`: `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`.
+- **Type-check in CI:** `tsc --noEmit` must pass in every package. No committing with type errors.
+
+### Banned in Component & Library Code
+
+| Practice | Rule | Prefer instead |
+| -------- | ---- | ----------------- |
+| **`any`** | Not allowed. | Proper types, or `unknown` with type guards / narrowing. |
+| **`@ts-ignore`** | Not allowed. | Fix the types, or use `@ts-expect-error` with a one-line comment (see below). |
+| **Unsafe `as Type`** | Avoid. | Narrow with type guards, or use type-safe patterns (e.g. discriminated unions). If assertion is unavoidable, add a one-line comment. |
+| **Implicit `any`** | Not allowed. | Enabled by `strict`; add explicit types for parameters and return values. |
+
+### When `@ts-expect-error` Is Allowed
+
+Use only when the type system cannot express the case (e.g. known upstream typings bug or untyped third-party API). Every use **must** have an immediate comment:
+
+```ts
+// @ts-expect-error — Radix typings don't yet expose this prop (issue #123)
+<SomePrimitive internalProp={value} />
+```
+
+Prefer fixing types or contributing a fix upstream. Remove `@ts-expect-error` as soon as the underlying issue is resolved.
+
+### Typing Conventions
+
+- **Props:** Define in `[Component].types.ts`. Extend the correct HTML or Radix type (e.g. `ComponentPropsWithoutRef<'button'>`). Use **discriminated unions** for mutually exclusive state (e.g. `loading` vs `disabled`).
+- **Refs:** Use `React.forwardRef<HTMLButtonElement, ButtonProps>()` (or the correct element type). Export the props type so consumers get correct ref types.
+- **Event handlers:** Type as `React.MouseEvent<HTMLButtonElement>`, `React.ChangeEvent<HTMLInputElement>`, etc. Do not use untyped `(e) => ...` for DOM events.
+- **Children / slots:** Use `React.ReactNode` for flexible content; use explicit types for render props (e.g. `(props: { value: string }) => React.ReactNode`).
+- **Unknown data:** Prefer `unknown` and narrow (e.g. `if (typeof x === 'string')`) instead of `any`.
+
+### Enforcement
+
+- **CI:** `pnpm run typecheck` (and lint with `@typescript-eslint` rules) must pass before merge.
+- **Checklist:** The "TypeScript strict" item in the PR checklist covers: no `any`, no `@ts-ignore`, types in `.types.ts`, and use of `@ts-expect-error` only with a comment when unavoidable.
 
 ---
 
@@ -405,11 +453,11 @@ Consumers override our design tokens in their own CSS to retheme **everything** 
 ```css
 /* consumer's globals.css */
 :root {
-  --background: oklch(0.98 0.01 240);       /* Custom light bg */
-  --foreground: oklch(0.15 0.02 240);       /* Custom text */
-  --brand: oklch(0.65 0.28 150);            /* Green instead of indigo */
+  --background: oklch(0.98 0.01 240); /* Custom light bg */
+  --foreground: oklch(0.15 0.02 240); /* Custom text */
+  --brand: oklch(0.65 0.28 150); /* Green instead of indigo */
   --brand-foreground: white;
-  --radius: 1rem;                           /* Rounder corners */
+  --radius: 1rem; /* Rounder corners */
 }
 
 .dark {
@@ -435,10 +483,10 @@ Every component accepts a `className` prop that merges with base styles using `c
 
 ```tsx
 // ✅ Correct — consumer className wins
-cn(buttonVariants({ variant, size }), className)
+cn(buttonVariants({ variant, size }), className);
 
 // ❌ Wrong — base styles will override consumer
-cn(className, buttonVariants({ variant, size }))
+cn(className, buttonVariants({ variant, size }));
 ```
 
 ---
@@ -473,9 +521,9 @@ interface DialogProps {
 // Consumer usage — custom styling of internal parts
 <Dialog
   classNames={{
-    overlay: "bg-blue-900/30 backdrop-blur-sm",
-    content: "max-w-2xl rounded-3xl",
-    title: "text-2xl font-black",
+    overlay: 'bg-blue-900/30 backdrop-blur-sm',
+    content: 'max-w-2xl rounded-3xl',
+    title: 'text-2xl font-black',
   }}
 >
   {/* ... */}
@@ -495,7 +543,7 @@ All stateful components must render **`data-*` attributes** reflecting their cur
 <button
   data-variant={variant}
   data-size={size}
-  data-state={isOpen ? "open" : "closed"}
+  data-state={isOpen ? 'open' : 'closed'}
   data-disabled={disabled || undefined}
   data-loading={loading || undefined}
   className={cn(buttonVariants({ variant, size }), className)}
@@ -505,12 +553,12 @@ All stateful components must render **`data-*` attributes** reflecting their cur
 
 ```css
 /* Consumer CSS — complete restyling via data attributes */
-[data-variant="destructive"] {
+[data-variant='destructive'] {
   background: linear-gradient(135deg, #ff6b6b, #ee5a24);
   box-shadow: 0 4px 20px rgba(238, 90, 36, 0.3);
 }
 
-[data-state="open"] {
+[data-state='open'] {
   transform: scale(1.02);
 }
 
@@ -522,14 +570,14 @@ All stateful components must render **`data-*` attributes** reflecting their cur
 
 **Required data attributes by component type:**
 
-| Component Type    | Required Data Attributes                               |
-| ----------------- | ------------------------------------------------------ |
-| All components    | `data-variant`, `data-size` (if applicable)            |
-| Toggleable        | `data-state="open"` / `data-state="closed"`            |
-| Selectable        | `data-state="active"` / `data-state="inactive"`        |
-| Disablable        | `data-disabled` (present/absent, not true/false)       |
-| Loadable          | `data-loading` (present/absent)                        |
-| Form elements     | `data-invalid` when validation fails                   |
+| Component Type | Required Data Attributes                         |
+| -------------- | ------------------------------------------------ |
+| All components | `data-variant`, `data-size` (if applicable)      |
+| Toggleable     | `data-state="open"` / `data-state="closed"`      |
+| Selectable     | `data-state="active"` / `data-state="inactive"`  |
+| Disablable     | `data-disabled` (present/absent, not true/false) |
+| Loadable       | `data-loading` (present/absent)                  |
+| Form elements  | `data-invalid` when validation fails             |
 
 ---
 
@@ -554,16 +602,15 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     return (
       <div ref={ref} {...props}>
         <div className="flex items-center justify-between">
-          {renderHeader
-            ? renderHeader({ title, description })
-            : (
-              <div>
-                {slotIcon && <span className="mr-2">{slotIcon}</span>}
-                <h3>{title}</h3>
-                {description && <p>{description}</p>}
-              </div>
-            )
-          }
+          {renderHeader ? (
+            renderHeader({ title, description })
+          ) : (
+            <div>
+              {slotIcon && <span className="mr-2">{slotIcon}</span>}
+              <h3>{title}</h3>
+              {description && <p>{description}</p>}
+            </div>
+          )}
           {slotAction}
         </div>
         {children}
@@ -587,6 +634,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 ```
 
 **Slot naming convention:**
+
 - `slot[Name]` — for injecting additional content (additive)
 - `render[Name]` — for replacing default rendering (substitutive)
 
@@ -597,17 +645,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 Components that render interactive HTML elements must support the **`asChild`** prop (powered by Radix's `Slot` primitive). This lets consumers render the component **as any element** — links, router components, or custom elements.
 
 ```tsx
-import { Slot } from "@radix-ui/react-slot";
+import { Slot } from '@radix-ui/react-slot';
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+    const Comp = asChild ? Slot : 'button';
     return (
-      <Comp
-        ref={ref}
-        className={cn(buttonVariants({ variant, size }), className)}
-        {...props}
-      />
+      <Comp ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />
     );
   }
 );
@@ -661,7 +705,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 ```tsx
 // Consumer usage — fully custom styling, our a11y + logic
-<Dialog unstyled classNames={{ content: "my-custom-modal" }}>
+<Dialog unstyled classNames={{ content: 'my-custom-modal' }}>
   {/* Keyboard nav, focus trap, ESC to close all still work */}
 </Dialog>
 ```
@@ -672,52 +716,58 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 ### Layer Summary
 
-| Layer | Prop / API         | Effort   | Control Level          | Use Case                                      |
-| ----- | ------------------ | -------- | ---------------------- | --------------------------------------------- |
-| 1     | CSS Variables      | Minimal  | Global theming          | "I want my brand colors everywhere"           |
-| 2     | `className`        | Low      | Root element override   | "I need this one button to look different"    |
-| 3     | `classNames`       | Low      | Sub-element targeting   | "I want to restyle the dialog's overlay"      |
-| 4     | `data-*` attrs     | Low      | Pure CSS state styling  | "I want custom hover/active/open styles"      |
-| 5     | Slots / Render     | Medium   | Content replacement     | "I want a completely custom card header"      |
-| 6     | `asChild`          | Medium   | Element polymorphism    | "I need this button to be a Next.js Link"     |
-| 7     | `unstyled`         | High     | Full headless mode      | "I'm bringing my own CSS framework"           |
+| Layer | Prop / API     | Effort  | Control Level          | Use Case                                   |
+| ----- | -------------- | ------- | ---------------------- | ------------------------------------------ |
+| 1     | CSS Variables  | Minimal | Global theming         | "I want my brand colors everywhere"        |
+| 2     | `className`    | Low     | Root element override  | "I need this one button to look different" |
+| 3     | `classNames`   | Low     | Sub-element targeting  | "I want to restyle the dialog's overlay"   |
+| 4     | `data-*` attrs | Low     | Pure CSS state styling | "I want custom hover/active/open styles"   |
+| 5     | Slots / Render | Medium  | Content replacement    | "I want a completely custom card header"   |
+| 6     | `asChild`      | Medium  | Element polymorphism   | "I need this button to be a Next.js Link"  |
+| 7     | `unstyled`     | High    | Full headless mode     | "I'm bringing my own CSS framework"        |
 
 ### Customization Testing Requirements
 
 Every component's test suite **must** include:
 
 ```tsx
-describe("customization", () => {
-  it("merges custom className onto root", () => {
+describe('customization', () => {
+  it('merges custom className onto root', () => {
     render(<Button className="custom-class">Test</Button>);
-    expect(screen.getByRole("button")).toHaveClass("custom-class");
+    expect(screen.getByRole('button')).toHaveClass('custom-class');
   });
 
-  it("applies classNames to sub-elements", () => {
+  it('applies classNames to sub-elements', () => {
     // For compound components
-    render(<Dialog classNames={{ overlay: "custom-overlay" }} />);
-    expect(document.querySelector("[data-overlay]")).toHaveClass("custom-overlay");
+    render(<Dialog classNames={{ overlay: 'custom-overlay' }} />);
+    expect(document.querySelector('[data-overlay]')).toHaveClass('custom-overlay');
   });
 
-  it("renders data attributes for state", () => {
-    render(<Button variant="destructive" disabled>Test</Button>);
-    const btn = screen.getByRole("button");
-    expect(btn).toHaveAttribute("data-variant", "destructive");
-    expect(btn).toHaveAttribute("data-disabled");
-  });
-
-  it("supports asChild rendering", () => {
+  it('renders data attributes for state', () => {
     render(
-      <Button asChild><a href="/test">Link</a></Button>
+      <Button variant="destructive" disabled>
+        Test
+      </Button>
     );
-    expect(screen.getByRole("link")).toHaveTextContent("Link");
+    const btn = screen.getByRole('button');
+    expect(btn).toHaveAttribute('data-variant', 'destructive');
+    expect(btn).toHaveAttribute('data-disabled');
   });
 
-  it("strips styles when unstyled is true", () => {
+  it('supports asChild rendering', () => {
+    render(
+      <Button asChild>
+        <a href="/test">Link</a>
+      </Button>
+    );
+    expect(screen.getByRole('link')).toHaveTextContent('Link');
+  });
+
+  it('strips styles when unstyled is true', () => {
     const { container } = render(<Button unstyled>Test</Button>);
-    const btn = container.querySelector("button");
+    const btn = container.querySelector('button');
     // Should have no cva-generated classes
-    expect(btn?.className).toBe("");
+    expect(btn?.className).toBe('');
   });
 });
 ```
@@ -731,9 +781,9 @@ describe("customization", () => {
 All className composition **must** use the `cn()` utility (wraps `clsx` + `tailwind-merge`):
 
 ```tsx
-import { cn } from "@deveditor/ui/utils";
+import { cn } from '@deveditor/ui/utils';
 
-cn("px-4 py-2", variant === "ghost" && "bg-transparent", className);
+cn('px-4 py-2', variant === 'ghost' && 'bg-transparent', className);
 ```
 
 ### Tailwind Class Ordering
@@ -755,14 +805,14 @@ Follow this order for readability:
 
 ### Animation Standards
 
-| Effect         | Implementation                                          |
-| -------------- | ------------------------------------------------------- |
-| Hover          | `transition-all duration-200` or `duration-300`         |
-| Appear/Enter   | `animate-in fade-in slide-in-from-bottom-4`             |
-| Exit           | `animate-out fade-out slide-out-to-bottom-4`            |
-| Scale on hover | `group-hover:scale-110 transition-transform`            |
-| Glow           | `hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]`        |
-| Skeleton       | `animate-pulse bg-muted rounded-md`                     |
+| Effect         | Implementation                                  |
+| -------------- | ----------------------------------------------- |
+| Hover          | `transition-all duration-200` or `duration-300` |
+| Appear/Enter   | `animate-in fade-in slide-in-from-bottom-4`     |
+| Exit           | `animate-out fade-out slide-out-to-bottom-4`    |
+| Scale on hover | `group-hover:scale-110 transition-transform`    |
+| Glow           | `hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]` |
+| Skeleton       | `animate-pulse bg-muted rounded-md`             |
 
 ---
 
@@ -777,16 +827,16 @@ Follow this order for readability:
 
 Always use the correct semantic HTML element before reaching for ARIA:
 
-| Need                     | Use This             | NOT This                          |
-| ------------------------ | -------------------- | --------------------------------- |
-| Clickable action         | `<button>`           | `<div onClick>`                   |
-| Navigation link          | `<a href>`           | `<span onClick>`                  |
-| Form label               | `<label htmlFor>`    | `<div className="label">`         |
-| List of items            | `<ul>` / `<ol>`      | `<div>` with `<div>` children     |
-| Table data               | `<table>` / `<th>`   | CSS grid mimicking a table        |
-| Heading hierarchy        | `<h1>` – `<h6>`      | `<div className="heading">`       |
-| Navigation region        | `<nav>`              | `<div role="navigation">`         |
-| Main content             | `<main>`             | `<div id="main">`                 |
+| Need              | Use This           | NOT This                      |
+| ----------------- | ------------------ | ----------------------------- |
+| Clickable action  | `<button>`         | `<div onClick>`               |
+| Navigation link   | `<a href>`         | `<span onClick>`              |
+| Form label        | `<label htmlFor>`  | `<div className="label">`     |
+| List of items     | `<ul>` / `<ol>`    | `<div>` with `<div>` children |
+| Table data        | `<table>` / `<th>` | CSS grid mimicking a table    |
+| Heading hierarchy | `<h1>` – `<h6>`    | `<div className="heading">`   |
+| Navigation region | `<nav>`            | `<div role="navigation">`     |
+| Main content      | `<main>`           | `<div id="main">`             |
 
 **Rule:** If a native HTML element provides the semantics you need, use it. The `role` attribute is a **last resort**, not a first choice.
 
@@ -798,21 +848,21 @@ Every interactive component must follow the **WAI-ARIA Authoring Practices** key
 
 #### Per-Component Keyboard Contracts
 
-| Component Type        | Required Keys                                                 | Behavior                                                     |
-| --------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ |
-| **Button**            | `Enter`, `Space`                                              | Activate the button                                          |
-| **Link**              | `Enter`                                                       | Follow the link                                              |
-| **Checkbox**          | `Space`                                                       | Toggle checked state                                         |
-| **Switch / Toggle**   | `Space`, `Enter`                                              | Toggle on/off                                                |
-| **Radio Group**       | `Arrow ↑↓` or `Arrow ←→`                                     | Move selection between options                               |
-| **Tabs**              | `Arrow ←→` (horizontal) / `Arrow ↑↓` (vertical)              | Move between tabs; `Tab` moves to panel                      |
-| **Select / Combobox** | `Arrow ↑↓` to navigate, `Enter` to select, `Escape` to close | Type-ahead search when focused                               |
-| **Dialog / Modal**    | `Escape` to close, `Tab` trapped inside                       | Focus first focusable element on open                        |
-| **Dropdown Menu**     | `Arrow ↑↓` to navigate, `Enter` to select, `Escape` to close | Focus first item on open                                     |
-| **Tooltip**           | `Escape` to dismiss                                           | Show on focus, hide on blur                                  |
-| **Accordion**         | `Enter` / `Space` on header                                   | Toggle section; `Arrow ↑↓` between headers                   |
-| **Slider**            | `Arrow ←→` (step), `Home` / `End`                            | Increment/decrement value                                    |
-| **Toast**             | `Escape` to dismiss (if persistent)                           | Auto-dismiss after timeout                                   |
+| Component Type        | Required Keys                                                | Behavior                                   |
+| --------------------- | ------------------------------------------------------------ | ------------------------------------------ |
+| **Button**            | `Enter`, `Space`                                             | Activate the button                        |
+| **Link**              | `Enter`                                                      | Follow the link                            |
+| **Checkbox**          | `Space`                                                      | Toggle checked state                       |
+| **Switch / Toggle**   | `Space`, `Enter`                                             | Toggle on/off                              |
+| **Radio Group**       | `Arrow ↑↓` or `Arrow ←→`                                     | Move selection between options             |
+| **Tabs**              | `Arrow ←→` (horizontal) / `Arrow ↑↓` (vertical)              | Move between tabs; `Tab` moves to panel    |
+| **Select / Combobox** | `Arrow ↑↓` to navigate, `Enter` to select, `Escape` to close | Type-ahead search when focused             |
+| **Dialog / Modal**    | `Escape` to close, `Tab` trapped inside                      | Focus first focusable element on open      |
+| **Dropdown Menu**     | `Arrow ↑↓` to navigate, `Enter` to select, `Escape` to close | Focus first item on open                   |
+| **Tooltip**           | `Escape` to dismiss                                          | Show on focus, hide on blur                |
+| **Accordion**         | `Enter` / `Space` on header                                  | Toggle section; `Arrow ↑↓` between headers |
+| **Slider**            | `Arrow ←→` (step), `Home` / `End`                            | Increment/decrement value                  |
+| **Toast**             | `Escape` to dismiss (if persistent)                          | Auto-dismiss after timeout                 |
 
 **Rule for contributors:** Before implementing a component, read the corresponding [WAI-ARIA Authoring Practice](https://www.w3.org/WAI/ARIA/apg/patterns/). Link the relevant APG pattern in the component's JSDoc.
 
@@ -826,7 +876,7 @@ All interactive elements must have a **visible focus ring**:
 
 ```tsx
 // Default focus style for all components
-"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 ```
 
 - Use `focus-visible` (not `focus`) to avoid showing rings on mouse clicks.
@@ -837,14 +887,14 @@ All interactive elements must have a **visible focus ring**:
 
 Components that open as overlays **must** trap focus inside:
 
-| Component     | Focus Behavior                                                        |
-| ------------- | --------------------------------------------------------------------- |
-| **Dialog**    | Trap focus. Return focus to trigger on close.                         |
-| **Popover**   | Trap focus. Return focus to trigger on close.                         |
-| **Dropdown**  | Trap focus. Return focus to trigger on close.                         |
-| **Toast**     | Do NOT trap focus (non-modal). Must be reachable via `F6` or tabbing. |
-| **Tooltip**   | Do NOT trap focus. Dismiss on `Escape`.                               |
-| **Sheet**     | Trap focus. Return focus to trigger on close.                         |
+| Component    | Focus Behavior                                                        |
+| ------------ | --------------------------------------------------------------------- |
+| **Dialog**   | Trap focus. Return focus to trigger on close.                         |
+| **Popover**  | Trap focus. Return focus to trigger on close.                         |
+| **Dropdown** | Trap focus. Return focus to trigger on close.                         |
+| **Toast**    | Do NOT trap focus (non-modal). Must be reachable via `F6` or tabbing. |
+| **Tooltip**  | Do NOT trap focus. Dismiss on `Escape`.                               |
+| **Sheet**    | Trap focus. Return focus to trigger on close.                         |
 
 **Focus restoration rule:** When a modal/overlay closes, focus **must** return to the element that triggered it. Radix handles this — do not interfere.
 
@@ -864,7 +914,7 @@ useEffect(() => {
 
 <div ref={resultRef} tabIndex={-1} role="region" aria-label="Search results">
   {/* results content */}
-</div>
+</div>;
 ```
 
 ---
@@ -898,14 +948,14 @@ useEffect(() => {
 
 4. **`aria-live` for dynamic content** — Announce changes to screen readers:
 
-| Content Change              | `aria-live` Value | Example                        |
-| --------------------------- | ----------------- | ------------------------------ |
-| Error messages              | `assertive`       | Form validation errors         |
-| Status updates              | `polite`          | "File uploaded successfully"   |
-| Toast notifications         | `polite`          | Non-critical notifications     |
-| Critical alerts             | `assertive`       | Session expired, data loss     |
-| Loading states              | `polite`          | "Loading results..."           |
-| Search result count updates | `polite`          | "5 results found"              |
+| Content Change              | `aria-live` Value | Example                      |
+| --------------------------- | ----------------- | ---------------------------- |
+| Error messages              | `assertive`       | Form validation errors       |
+| Status updates              | `polite`          | "File uploaded successfully" |
+| Toast notifications         | `polite`          | Non-critical notifications   |
+| Critical alerts             | `assertive`       | Session expired, data loss   |
+| Loading states              | `polite`          | "Loading results..."         |
+| Search result count updates | `polite`          | "5 results found"            |
 
 5. **`aria-busy`** — Set on containers that are loading:
 
@@ -929,9 +979,9 @@ const LiveAnnouncer = () => {
   return (
     <div
       role="status"
-      aria-live={priority}   // "polite" or "assertive"
+      aria-live={priority} // "polite" or "assertive"
       aria-atomic="true"
-      className="sr-only"     // Visually hidden, screen-reader only
+      className="sr-only" // Visually hidden, screen-reader only
     >
       {message}
     </div>
@@ -945,14 +995,14 @@ const LiveAnnouncer = () => {
 
 #### Contrast Ratios (WCAG AA)
 
-| Element Type             | Minimum Ratio | How to Check                      |
-| ------------------------ | ------------- | --------------------------------- |
-| Normal text (< 18px)     | **4.5:1**     | Foreground vs. background         |
-| Large text (≥ 18px bold / ≥ 24px) | **3:1** | Foreground vs. background   |
-| UI components & borders  | **3:1**       | Against adjacent colors           |
-| Focus indicators         | **3:1**       | Against surrounding background    |
-| Placeholder text         | **4.5:1**     | Against input background          |
-| Disabled elements        | No requirement | But should still be perceivable  |
+| Element Type                      | Minimum Ratio  | How to Check                    |
+| --------------------------------- | -------------- | ------------------------------- |
+| Normal text (< 18px)              | **4.5:1**      | Foreground vs. background       |
+| Large text (≥ 18px bold / ≥ 24px) | **3:1**        | Foreground vs. background       |
+| UI components & borders           | **3:1**        | Against adjacent colors         |
+| Focus indicators                  | **3:1**        | Against surrounding background  |
+| Placeholder text                  | **4.5:1**      | Against input background        |
+| Disabled elements                 | No requirement | But should still be perceivable |
 
 #### Color-Independent Communication
 
@@ -983,11 +1033,11 @@ Components must remain usable in Windows High Contrast Mode (forced-colors):
 ```css
 @media (forced-colors: active) {
   .button {
-    border: 2px solid ButtonText;    /* Use system color keywords */
+    border: 2px solid ButtonText; /* Use system color keywords */
   }
 
   .focus-ring {
-    outline: 2px solid Highlight;    /* System highlight color */
+    outline: 2px solid Highlight; /* System highlight color */
   }
 }
 ```
@@ -1019,7 +1069,7 @@ All animations and transitions must be disabled or minimized when the user prefe
 **In components:** Use the `useReducedMotion()` hook for JS-driven animations:
 
 ```tsx
-import { useReducedMotion } from "@deveditor/ui/hooks";
+import { useReducedMotion } from '@deveditor/ui/hooks';
 
 const Toast = ({ children }: ToastProps) => {
   const prefersReducedMotion = useReducedMotion();
@@ -1027,10 +1077,10 @@ const Toast = ({ children }: ToastProps) => {
   return (
     <div
       className={cn(
-        "transform transition-all",
+        'transform transition-all',
         prefersReducedMotion
-          ? ""  // No animation
-          : "animate-in slide-in-from-right-full duration-300"
+          ? '' // No animation
+          : 'animate-in slide-in-from-right-full duration-300'
       )}
     >
       {children}
@@ -1049,12 +1099,12 @@ const Toast = ({ children }: ToastProps) => {
 
 ### 7. Touch & Pointer
 
-| Requirement              | Minimum     | Notes                                   |
-| ------------------------ | ----------- | --------------------------------------- |
-| Touch target size        | **44×44px** | Per WCAG 2.5.8 (Target Size Enhanced)   |
-| Spacing between targets  | **8px**     | Prevents accidental taps                |
-| Drag actions             | Must have alternative | Provide button/keyboard alternative |
-| Hover-dependent content  | Must be triggerable by focus | Tooltips, popovers   |
+| Requirement             | Minimum                      | Notes                                 |
+| ----------------------- | ---------------------------- | ------------------------------------- |
+| Touch target size       | **44×44px**                  | Per WCAG 2.5.8 (Target Size Enhanced) |
+| Spacing between targets | **8px**                      | Prevents accidental taps              |
+| Drag actions            | Must have alternative        | Provide button/keyboard alternative   |
+| Hover-dependent content | Must be triggerable by focus | Tooltips, popovers                    |
 
 **Rule:** If a component has a visual size smaller than 44px (e.g., a compact icon button), its **hit area** must still be 44px via padding or a transparent pseudo-element:
 
@@ -1110,7 +1160,11 @@ Every form-related component **must** implement:
 <div role="group" aria-labelledby="field-label">
   <Label id="field-label" htmlFor="field-input">
     Email Address
-    {required && <span aria-hidden="true" className="text-destructive ml-1">*</span>}
+    {required && (
+      <span aria-hidden="true" className="text-destructive ml-1">
+        *
+      </span>
+    )}
     {required && <span className="sr-only">(required)</span>}
   </Label>
 
@@ -1118,14 +1172,13 @@ Every form-related component **must** implement:
     id="field-input"
     aria-required={required}
     aria-invalid={!!error}
-    aria-describedby={cn(
-      helpText && "field-help",
-      error && "field-error"
-    )}
+    aria-describedby={cn(helpText && 'field-help', error && 'field-error')}
   />
 
   {helpText && (
-    <p id="field-help" className="text-sm text-muted-foreground">{helpText}</p>
+    <p id="field-help" className="text-sm text-muted-foreground">
+      {helpText}
+    </p>
   )}
 
   {error && (
@@ -1139,11 +1192,11 @@ Every form-related component **must** implement:
 
 #### Error Announcement Strategy
 
-| Timing            | Method                                        | Example                            |
-| ----------------- | --------------------------------------------- | ---------------------------------- |
-| On field blur     | Inline error with `role="alert"`              | "Email is required"                |
-| On form submit    | Focus the first invalid field                 | Programmatic `.focus()` call       |
-| Error summary     | `aria-live="assertive"` region at form top    | "3 errors found. Please correct."  |
+| Timing         | Method                                     | Example                           |
+| -------------- | ------------------------------------------ | --------------------------------- |
+| On field blur  | Inline error with `role="alert"`           | "Email is required"               |
+| On form submit | Focus the first invalid field              | Programmatic `.focus()` call      |
+| Error summary  | `aria-live="assertive"` region at form top | "3 errors found. Please correct." |
 
 ---
 
@@ -1153,13 +1206,13 @@ Components must not break in RTL layouts:
 
 - Use **logical CSS properties** instead of directional ones:
 
-| ❌ Don't Use       | ✅ Use Instead        |
-| ------------------- | ---------------------- |
-| `margin-left`       | `margin-inline-start`  |
-| `padding-right`     | `padding-inline-end`   |
-| `text-align: left`  | `text-align: start`    |
-| `border-left`       | `border-inline-start`  |
-| `left: 0`           | `inset-inline-start: 0`|
+| ❌ Don't Use       | ✅ Use Instead          |
+| ------------------ | ----------------------- |
+| `margin-left`      | `margin-inline-start`   |
+| `padding-right`    | `padding-inline-end`    |
+| `text-align: left` | `text-align: start`     |
+| `border-left`      | `border-inline-start`   |
+| `left: 0`          | `inset-inline-start: 0` |
 
 - In Tailwind, prefer `ms-*` / `me-*` / `ps-*` / `pe-*` over `ml-*` / `mr-*` / `pl-*` / `pr-*`.
 - Icons that imply direction (arrows, chevrons) must flip in RTL mode.
@@ -1174,21 +1227,21 @@ Components must not break in RTL layouts:
 Every component test file **must** include axe-core assertions:
 
 ```tsx
-import { axe, toHaveNoViolations } from "jest-axe";
+import { axe, toHaveNoViolations } from 'jest-axe';
 expect.extend(toHaveNoViolations);
 
-describe("accessibility", () => {
-  it("has no axe violations (default)", async () => {
+describe('accessibility', () => {
+  it('has no axe violations (default)', async () => {
     const { container } = render(<Button>Click me</Button>);
     expect(await axe(container)).toHaveNoViolations();
   });
 
-  it("has no axe violations (disabled state)", async () => {
+  it('has no axe violations (disabled state)', async () => {
     const { container } = render(<Button disabled>Disabled</Button>);
     expect(await axe(container)).toHaveNoViolations();
   });
 
-  it("has no axe violations (all variants)", async () => {
+  it('has no axe violations (all variants)', async () => {
     const { container } = render(
       <>
         <Button variant="default">Default</Button>
@@ -1206,27 +1259,27 @@ describe("accessibility", () => {
 
 ```tsx
 // Playwright keyboard navigation test
-test("Dialog: full keyboard flow", async ({ page }) => {
-  await page.goto("/storybook/dialog--default");
+test('Dialog: full keyboard flow', async ({ page }) => {
+  await page.goto('/storybook/dialog--default');
 
   // Open dialog
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Enter");
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Enter');
 
   // Verify focus is inside dialog
-  const dialog = page.getByRole("dialog");
+  const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
 
   // Tab through focusable elements inside
-  await page.keyboard.press("Tab");
-  await expect(page.getByRole("textbox")).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('textbox')).toBeFocused();
 
   // Close with Escape
-  await page.keyboard.press("Escape");
+  await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
 
   // Verify focus returned to trigger
-  await expect(page.getByRole("button", { name: "Open Dialog" })).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Open Dialog' })).toBeFocused();
 });
 ```
 
@@ -1234,13 +1287,14 @@ test("Dialog: full keyboard flow", async ({ page }) => {
 
 Before any major version release, manually verify every component with:
 
-| Screen Reader          | Browser         | OS      |
-| ---------------------- | --------------- | ------- |
-| **VoiceOver**          | Safari          | macOS   |
-| **NVDA**               | Chrome / Firefox| Windows |
-| **TalkBack**           | Chrome          | Android |
+| Screen Reader | Browser          | OS      |
+| ------------- | ---------------- | ------- |
+| **VoiceOver** | Safari           | macOS   |
+| **NVDA**      | Chrome / Firefox | Windows |
+| **TalkBack**  | Chrome           | Android |
 
 **What to verify:**
+
 - Component role is announced correctly
 - State changes are announced (open/closed, checked/unchecked, expanded/collapsed)
 - Error messages are announced immediately
@@ -1272,16 +1326,16 @@ Before any major version release, manually verify every component with:
 
 Every component **must** have tests covering:
 
-| Category           | What to Test                                             |
-| ------------------ | -------------------------------------------------------- |
-| **Rendering**      | Renders without crashing, correct HTML element           |
-| **Props**          | Each prop affects output as expected                     |
-| **Variants**       | Every variant renders with correct classes               |
-| **Events**         | Click, change, focus, blur handlers fire correctly       |
-| **Accessibility**  | axe-core passes, ARIA attributes present                 |
-| **Ref forwarding** | `ref` correctly attaches to DOM node                     |
-| **className merge**| Custom `className` merges without overriding base styles |
-| **Edge cases**     | Empty states, long text, missing optional props          |
+| Category            | What to Test                                             |
+| ------------------- | -------------------------------------------------------- |
+| **Rendering**       | Renders without crashing, correct HTML element           |
+| **Props**           | Each prop affects output as expected                     |
+| **Variants**        | Every variant renders with correct classes               |
+| **Events**          | Click, change, focus, blur handlers fire correctly       |
+| **Accessibility**   | axe-core passes, ARIA attributes present                 |
+| **Ref forwarding**  | `ref` correctly attaches to DOM node                     |
+| **className merge** | Custom `className` merges without overriding base styles |
+| **Edge cases**      | Empty states, long text, missing optional props          |
 
 ### Playwright (Visual Regression)
 
@@ -1292,12 +1346,12 @@ Every component **must** have tests covering:
 
 ### Coverage Thresholds
 
-| Metric      | Minimum |
-| ----------- | ------- |
-| Statements  | 90%     |
-| Branches    | 85%     |
-| Functions   | 90%     |
-| Lines       | 90%     |
+| Metric     | Minimum |
+| ---------- | ------- |
+| Statements | 90%     |
+| Branches   | 85%     |
+| Functions  | 90%     |
+| Lines      | 90%     |
 
 CI will **fail** if coverage drops below these thresholds.
 
@@ -1318,21 +1372,21 @@ Every component must have a `.stories.tsx` file with:
 ### Story Template
 
 ```tsx
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./Button";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
-  title: "Components/Button",
+  title: 'Components/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["default", "destructive", "outline", "ghost", "link"],
+      control: 'select',
+      options: ['default', 'destructive', 'outline', 'ghost', 'link'],
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon"],
+      control: 'select',
+      options: ['default', 'sm', 'lg', 'icon'],
     },
   },
 };
@@ -1342,8 +1396,8 @@ type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
   args: {
-    children: "Button",
-    variant: "default",
+    children: 'Button',
+    variant: 'default',
   },
 };
 
@@ -1362,12 +1416,12 @@ export const AllVariants: Story = {
 
 ### Storybook Addons (Required)
 
-| Addon                        | Purpose                            |
-| ---------------------------- | ---------------------------------- |
-| `@storybook/addon-essentials`| Controls, actions, docs, viewport  |
-| `@storybook/addon-a11y`     | Accessibility panel in stories     |
-| `@storybook/addon-themes`   | Light/dark mode toggle             |
-| `@storybook/addon-interactions` | Interaction testing in browser |
+| Addon                           | Purpose                           |
+| ------------------------------- | --------------------------------- |
+| `@storybook/addon-essentials`   | Controls, actions, docs, viewport |
+| `@storybook/addon-a11y`         | Accessibility panel in stories    |
+| `@storybook/addon-themes`       | Light/dark mode toggle            |
+| `@storybook/addon-interactions` | Interaction testing in browser    |
 
 ---
 
@@ -1381,6 +1435,7 @@ export const AllVariants: Story = {
 ### Core Principle: Zero Hardcoded Strings
 
 **No component may contain hardcoded user-facing text.** Every piece of visible text must come from:
+
 - Props (for simple components)
 - Children (for compositional components)
 - A labels/messages prop object (for complex components with many internal strings)
@@ -1401,13 +1456,13 @@ interface DialogProps {
   children: React.ReactNode;
   /** Labels for internal UI elements (close button, etc.) */
   labels?: {
-    close?: string;       // default: "Close"
+    close?: string; // default: "Close"
   };
 }
 
 const Dialog = ({ children, labels }: DialogProps) => (
   <div>
-    <button aria-label={labels?.close ?? "Close"}>
+    <button aria-label={labels?.close ?? 'Close'}>
       <X className="w-4 h-4" />
     </button>
     {children}
@@ -1424,26 +1479,26 @@ For components with internal text (buttons, placeholders, status messages), expo
 ```tsx
 // Define defaults in a separate constant (exported for documentation)
 export const DEFAULT_DIALOG_LABELS = {
-  close: "Close",
+  close: 'Close',
 } as const;
 
 export const DEFAULT_PAGINATION_LABELS = {
-  previous: "Previous",
-  next: "Next",
-  page: "Page",
-  of: "of",
-  showing: "Showing",
-  results: "results",
+  previous: 'Previous',
+  next: 'Next',
+  page: 'Page',
+  of: 'of',
+  showing: 'Showing',
+  results: 'results',
 } as const;
 
 export const DEFAULT_FILE_UPLOAD_LABELS = {
-  dragDrop: "Drag & drop files here",
-  browse: "Browse files",
-  uploading: "Uploading...",
-  uploaded: "Upload complete",
-  error: "Upload failed",
-  remove: "Remove file",
-  maxSize: "Max file size: {size}",
+  dragDrop: 'Drag & drop files here',
+  browse: 'Browse files',
+  uploading: 'Uploading...',
+  uploaded: 'Upload complete',
+  error: 'Upload failed',
+  remove: 'Remove file',
+  maxSize: 'Max file size: {size}',
 } as const;
 
 // Component usage
@@ -1456,7 +1511,9 @@ const Pagination = ({ labels: userLabels }: PaginationProps) => {
   return (
     <nav aria-label={labels.page}>
       <button>{labels.previous}</button>
-      <span>{labels.page} 1 {labels.of} 10</span>
+      <span>
+        {labels.page} 1 {labels.of} 10
+      </span>
       <button>{labels.next}</button>
     </nav>
   );
@@ -1467,10 +1524,10 @@ const Pagination = ({ labels: userLabels }: PaginationProps) => {
 // Consumer usage — Japanese
 <Pagination
   labels={{
-    previous: "前へ",
-    next: "次へ",
-    page: "ページ",
-    of: "/",
+    previous: '前へ',
+    next: '次へ',
+    page: 'ページ',
+    of: '/',
   }}
 />
 ```
@@ -1485,11 +1542,11 @@ For apps that want to configure translations globally (instead of per-component)
 
 ```tsx
 // Provider definition (in the library)
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 interface DeveditorUILocale {
   /** Text direction */
-  dir: "ltr" | "rtl";
+  dir: 'ltr' | 'rtl';
   /** BCP 47 locale tag */
   locale: string;
   /** Global label overrides — keyed by component name */
@@ -1502,41 +1559,43 @@ interface DeveditorUILocale {
 }
 
 const defaultLocale: DeveditorUILocale = {
-  dir: "ltr",
-  locale: "en-US",
+  dir: 'ltr',
+  locale: 'en-US',
 };
 
 const UIContext = createContext<DeveditorUILocale>(defaultLocale);
 
-export const DeveditorUIProvider = ({ value, children }: {
+export const DeveditorUIProvider = ({
+  value,
+  children,
+}: {
   value: Partial<DeveditorUILocale>;
   children: React.ReactNode;
-}) => (
-  <UIContext.Provider value={{ ...defaultLocale, ...value }}>
-    {children}
-  </UIContext.Provider>
-);
+}) => <UIContext.Provider value={{ ...defaultLocale, ...value }}>{children}</UIContext.Provider>;
 
 export const useUILocale = () => useContext(UIContext);
 ```
 
 ```tsx
 // Consumer usage — Arabic app
-import { DeveditorUIProvider } from "@deveditor/ui";
+import { DeveditorUIProvider } from '@deveditor/ui';
 
-<DeveditorUIProvider value={{
-  dir: "rtl",
-  locale: "ar-SA",
-  labels: {
-    dialog: { close: "إغلاق" },
-    pagination: { previous: "السابق", next: "التالي", page: "صفحة", of: "من" },
-  },
-}}>
+<DeveditorUIProvider
+  value={{
+    dir: 'rtl',
+    locale: 'ar-SA',
+    labels: {
+      dialog: { close: 'إغلاق' },
+      pagination: { previous: 'السابق', next: 'التالي', page: 'صفحة', of: 'من' },
+    },
+  }}
+>
   <App />
-</DeveditorUIProvider>
+</DeveditorUIProvider>;
 ```
 
 **Label resolution order:**
+
 1. Component-level `labels` prop (highest priority)
 2. `DeveditorUIProvider` global labels
 3. `DEFAULT_*_LABELS` English fallback
@@ -1546,9 +1605,9 @@ import { DeveditorUIProvider } from "@deveditor/ui";
 const Pagination = ({ labels: propLabels }: PaginationProps) => {
   const { labels: globalLabels } = useUILocale();
   const labels = {
-    ...DEFAULT_PAGINATION_LABELS,          // 3. English defaults
-    ...globalLabels?.pagination,           // 2. Provider overrides
-    ...propLabels,                         // 1. Prop overrides (wins)
+    ...DEFAULT_PAGINATION_LABELS, // 3. English defaults
+    ...globalLabels?.pagination, // 2. Provider overrides
+    ...propLabels, // 1. Prop overrides (wins)
   };
   // ...
 };
@@ -1564,12 +1623,12 @@ Components that display **numbers, dates, currencies, or lists** must use the br
 
 ```tsx
 // ❌ Wrong — hardcoded format
-<span>{count.toLocaleString()}</span>
+<span>{count.toLocaleString()}</span>;
 
 // ✅ Correct — locale from provider
 const { locale } = useUILocale();
 const formatter = new Intl.NumberFormat(locale);
-<span>{formatter.format(count)}</span>
+<span>{formatter.format(count)}</span>;
 // en-US: "1,234,567"  •  de-DE: "1.234.567"  •  hi-IN: "12,34,567"
 ```
 
@@ -1579,15 +1638,17 @@ const formatter = new Intl.NumberFormat(locale);
 const { locale } = useUILocale();
 
 // Relative time ("2 hours ago")
-const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-<span>{rtf.format(-2, "hour")}</span>
+const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+<span>{rtf.format(-2, 'hour')}</span>;
 // en: "2 hours ago"  •  ja: "2 時間前"  •  ar: "قبل ساعتين"
 
 // Absolute date
 const dtf = new Intl.DateTimeFormat(locale, {
-  year: "numeric", month: "short", day: "numeric",
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
 });
-<time dateTime={date.toISOString()}>{dtf.format(date)}</time>
+<time dateTime={date.toISOString()}>{dtf.format(date)}</time>;
 // en-US: "Mar 12, 2026"  •  de-DE: "12. März 2026"
 ```
 
@@ -1595,8 +1656,8 @@ const dtf = new Intl.DateTimeFormat(locale, {
 
 ```tsx
 const { locale } = useUILocale();
-const lf = new Intl.ListFormat(locale, { style: "long", type: "conjunction" });
-<span>{lf.format(["Red", "Green", "Blue"])}</span>
+const lf = new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' });
+<span>{lf.format(['Red', 'Green', 'Blue'])}</span>;
 // en: "Red, Green, and Blue"  •  ja: "Red、Green、Blue"
 ```
 
@@ -1614,21 +1675,21 @@ const pr = new Intl.PluralRules(locale);
 
 // Define plural forms per locale
 const resultMessages: Record<string, string> = {
-  zero: "No results found",
-  one: "1 result found",
+  zero: 'No results found',
+  one: '1 result found',
   other: `${count} results found`,
 };
 
-<span>{resultMessages[pr.select(count)]}</span>
+<span>{resultMessages[pr.select(count)]}</span>;
 ```
 
 For components with default internal messages, include all plural forms in the `labels` object:
 
 ```tsx
 export const DEFAULT_SEARCH_LABELS = {
-  results_zero: "No results",
-  results_one: "{count} result",
-  results_other: "{count} results",
+  results_zero: 'No results',
+  results_one: '{count} result',
+  results_other: '{count} results',
 } as const;
 ```
 
@@ -1664,12 +1725,12 @@ export const DeveditorUIProvider = ({ value, children }: ProviderProps) => {
 
 Different scripts have different typographic needs:
 
-| Script       | Consideration                                         | Action                                    |
-| ------------ | ----------------------------------------------------- | ----------------------------------------- |
-| **CJK**      | Characters are wider; line heights need adjustment     | Use `leading-relaxed` or `leading-loose`  |
-| **Arabic**   | Cursive connections; RTL; different numeral systems    | Use `font-feature-settings: "calt"`       |
-| **Devanagari** | Requires more vertical space; conjuncts              | Increase `line-height` by ~20%            |
-| **Thai**     | No word breaks; needs `word-break: keep-all`          | Add `break-keep` Tailwind class           |
+| Script         | Consideration                                       | Action                                   |
+| -------------- | --------------------------------------------------- | ---------------------------------------- |
+| **CJK**        | Characters are wider; line heights need adjustment  | Use `leading-relaxed` or `leading-loose` |
+| **Arabic**     | Cursive connections; RTL; different numeral systems | Use `font-feature-settings: "calt"`      |
+| **Devanagari** | Requires more vertical space; conjuncts             | Increase `line-height` by ~20%           |
+| **Thai**       | No word breaks; needs `word-break: keep-all`        | Add `break-keep` Tailwind class          |
 
 **Rule:** Components must not set `overflow: hidden` on text containers without also setting `text-overflow: ellipsis`. Truncated text in longer scripts (German, Finnish) would otherwise silently disappear.
 
@@ -1707,39 +1768,39 @@ Next.js App Router defaults to **Server Components**. Any component using hooks,
 
 ```tsx
 // packages/ui/src/components/dialog/Dialog.tsx
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // ...
 ```
 
 ```tsx
 // packages/ui/src/components/dialog/index.ts
 // ⚠️ NO "use client" here — let the component file declare it
-export { Dialog } from "./Dialog";
-export type { DialogProps } from "./Dialog.types";
+export { Dialog } from './Dialog';
+export type { DialogProps } from './Dialog.types';
 ```
 
 #### What Requires `"use client"`
 
-| Trigger                                    | Examples                                  |
-| ------------------------------------------ | ----------------------------------------- |
-| `useState`, `useReducer`                   | Toggle, form state, controlled inputs     |
-| `useEffect`, `useLayoutEffect`             | Side effects, DOM measurements            |
-| `useRef` (with DOM mutation)               | Focus management, scroll position         |
-| `useContext`                               | `useUILocale()`, theme context            |
-| Event handlers (`onClick`, `onChange`)      | All interactive components                |
-| Browser APIs (`window`, `document`)         | Media queries, localStorage              |
+| Trigger                                | Examples                              |
+| -------------------------------------- | ------------------------------------- |
+| `useState`, `useReducer`               | Toggle, form state, controlled inputs |
+| `useEffect`, `useLayoutEffect`         | Side effects, DOM measurements        |
+| `useRef` (with DOM mutation)           | Focus management, scroll position     |
+| `useContext`                           | `useUILocale()`, theme context        |
+| Event handlers (`onClick`, `onChange`) | All interactive components            |
+| Browser APIs (`window`, `document`)    | Media queries, localStorage           |
 
 #### What Does NOT Require `"use client"`
 
-| Pattern                                    | Examples                                  |
-| ------------------------------------------ | ----------------------------------------- |
-| Pure props → JSX                           | `Badge`, `Separator`, display-only cards  |
-| `cn()` class merging                       | All components (cn is a pure function)    |
-| `cva` variant generation                   | Variant helpers                           |
-| Type definitions (`.types.ts`)             | Props interfaces                          |
-| Utility functions (`utils/`)               | `cn()`, formatters, validators            |
+| Pattern                        | Examples                                 |
+| ------------------------------ | ---------------------------------------- |
+| Pure props → JSX               | `Badge`, `Separator`, display-only cards |
+| `cn()` class merging           | All components (cn is a pure function)   |
+| `cva` variant generation       | Variant helpers                          |
+| Type definitions (`.types.ts`) | Props interfaces                         |
+| Utility functions (`utils/`)   | `cn()`, formatters, validators           |
 
 ---
 
@@ -1747,19 +1808,19 @@ export type { DialogProps } from "./Dialog.types";
 
 These APIs do not exist during SSR. **Never** call them at the module level or during render:
 
-| ❌ Forbidden at Render     | ✅ Safe Alternative                                     |
-| -------------------------- | ------------------------------------------------------- |
-| `window.innerWidth`        | `useEffect` + state, or CSS media queries               |
-| `document.getElementById`  | `useRef` + `useEffect`                                  |
-| `localStorage.getItem`     | `useEffect` to read after hydration                     |
-| `navigator.clipboard`      | Guard: `typeof navigator !== "undefined"`               |
-| `window.matchMedia`        | `useEffect` with SSR-safe default (see below)           |
-| `crypto.randomUUID()`      | Use in `useEffect` or pass as prop from server          |
+| ❌ Forbidden at Render    | ✅ Safe Alternative                            |
+| ------------------------- | ---------------------------------------------- |
+| `window.innerWidth`       | `useEffect` + state, or CSS media queries      |
+| `document.getElementById` | `useRef` + `useEffect`                         |
+| `localStorage.getItem`    | `useEffect` to read after hydration            |
+| `navigator.clipboard`     | Guard: `typeof navigator !== "undefined"`      |
+| `window.matchMedia`       | `useEffect` with SSR-safe default (see below)  |
+| `crypto.randomUUID()`     | Use in `useEffect` or pass as prop from server |
 
 **Pattern for SSR-safe browser API access:**
 
 ```tsx
-"use client";
+'use client';
 
 const useIsClient = () => {
   const [isClient, setIsClient] = useState(false);
@@ -1787,9 +1848,12 @@ Hydration mismatches occur when server HTML differs from the first client render
 
 ```tsx
 // ❌ WRONG — server renders "light", client might render "dark"
-const theme = typeof window !== "undefined" 
-  ? window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-  : "light";
+const theme =
+  typeof window !== 'undefined'
+    ? window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+    : 'light';
 return <div data-theme={theme}>...</div>;
 
 // ✅ CORRECT — use CSS variables, which adapt without JS
@@ -1810,12 +1874,16 @@ return <div className="bg-background text-foreground">...</div>;
 
 ```tsx
 // ❌ WRONG — renders different content on server
-{typeof window !== "undefined" ? <ClientContent /> : null}
+{
+  typeof window !== 'undefined' ? <ClientContent /> : null;
+}
 
 // ✅ CORRECT — useEffect + state to reveal client-only content after hydration
 const [mounted, setMounted] = useState(false);
 useEffect(() => setMounted(true), []);
-{mounted && <ClientContent />}
+{
+  mounted && <ClientContent />;
+}
 ```
 
 ---
@@ -1825,9 +1893,9 @@ useEffect(() => setMounted(true), []);
 Hooks that depend on browser APIs must return a **safe default** on the server:
 
 ```tsx
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 /**
  * Returns true if the user prefers reduced motion.
@@ -1837,12 +1905,12 @@ export const useReducedMotion = (): boolean => {
   const [prefersReduced, setPrefersReduced] = useState(false); // SSR default
 
   useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReduced(mql.matches);
 
     const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
   }, []);
 
   return prefersReduced;
@@ -1870,8 +1938,8 @@ export const useMediaQuery = (query: string): boolean => {
     setMatches(mql.matches);
 
     const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
   }, [query]);
 
   return matches;
@@ -1884,20 +1952,19 @@ export const useMediaQuery = (query: string): boolean => {
 
 Every component should be classified in its JSDoc:
 
-| Classification      | Meaning                                        | Example Components                     |
-| ------------------- | ---------------------------------------------- | -------------------------------------- |
-| **Server-safe**     | No `"use client"` needed, pure render          | `Badge`, `Separator`, `Skeleton`       |
-| **Client-required** | Needs `"use client"`, interactive              | `Button`, `Dialog`, `Tabs`, `Select`   |
-| **Client-deferred** | Renders placeholder on server, updates on mount | Theme toggle, clipboard buttons        |
+| Classification      | Meaning                                         | Example Components                   |
+| ------------------- | ----------------------------------------------- | ------------------------------------ |
+| **Server-safe**     | No `"use client"` needed, pure render           | `Badge`, `Separator`, `Skeleton`     |
+| **Client-required** | Needs `"use client"`, interactive               | `Button`, `Dialog`, `Tabs`, `Select` |
+| **Client-deferred** | Renders placeholder on server, updates on mount | Theme toggle, clipboard buttons      |
 
 ```tsx
 /**
  * @ssr client-required
  * @reason Uses useState for open/close state and focus trapping
  */
-const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
-  // ...
-);
+const Dialog = React.forwardRef<HTMLDivElement, DialogProps>();
+// ...
 ```
 
 ---
@@ -1924,16 +1991,26 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
 
 ## 📝 Documentation Requirements
 
+> **Goal:** Anyone contributing to the project should be able to understand the code by reading it. Every piece of logic should be clear from the code itself, with comments where intent or behavior is not obvious.
+
+### Inline Comments for Logic
+
+- **Document non-obvious logic** — Use inline comments to explain *why* something is done, not *what* the code does (the code should show that). This helps contributors (and future you) understand intent, edge cases, and constraints.
+- **Where to comment:** Complex conditionals, workarounds, non-obvious algorithms, accessibility or focus logic, integration with third-party APIs (e.g. Radix), and any branch that exists to satisfy a specific requirement (a11y, SSR, etc.).
+- **Keep comments concise** — One line above the block or a short trailing comment. Update comments when you change the logic; remove comments that become obsolete.
+- **Prefer self-explanatory code** — Good naming and small functions often make comments unnecessary. Add comments when the "why" or context is not obvious from the code alone.
+
 ### Every Component Must Have:
 
 1. **JSDoc on the component** — Description, example usage.
 2. **JSDoc on every prop** — What it does, default value, constraints.
-3. **Storybook stories** — As defined above.
-4. **README.md** (optional for simple components) — For complex components with non-obvious behavior.
+3. **Inline comments** — For any logic that isn’t obvious so contributors can follow the code without guessing.
+4. **Storybook stories** — As defined above.
+5. **README.md** (optional for simple components) — For complex components with non-obvious behavior.
 
 ### JSDoc Example
 
-```tsx
+````tsx
 /**
  * Primary UI button component.
  *
@@ -1947,10 +2024,9 @@ const Dialog = React.forwardRef<HTMLDivElement, DialogProps>(
  * </Button>
  * ```
  */
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  // ...
-);
-```
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>();
+// ...
+````
 
 ### Props Documentation
 
@@ -1960,13 +2036,13 @@ interface ButtonProps {
    * The visual style of the button.
    * @default "default"
    */
-  variant?: "default" | "destructive" | "outline" | "ghost" | "link";
+  variant?: 'default' | 'destructive' | 'outline' | 'ghost' | 'link';
 
   /**
    * The size of the button.
    * @default "default"
    */
-  size?: "default" | "sm" | "lg" | "icon";
+  size?: 'default' | 'sm' | 'lg' | 'icon';
 
   /**
    * When true, the button renders its child as the root element (Radix Slot pattern).
@@ -1983,14 +2059,14 @@ interface ButtonProps {
 
 ### Branch Strategy
 
-| Branch     | Purpose                                    |
-| ---------- | ------------------------------------------ |
-| `main`     | Production — auto-publishes to NPM         |
-| `dev`      | Integration — PR target for features       |
-| `feat/*`   | New component or feature                   |
-| `fix/*`    | Bug fix                                    |
-| `docs/*`   | Documentation only                         |
-| `refactor/*` | Internal refactor, no API change         |
+| Branch       | Purpose                              |
+| ------------ | ------------------------------------ |
+| `main`       | Production — auto-publishes to NPM   |
+| `dev`        | Integration — PR target for features |
+| `feat/*`     | New component or feature             |
+| `fix/*`      | Bug fix                              |
+| `docs/*`     | Documentation only                   |
+| `refactor/*` | Internal refactor, no API change     |
 
 ### Commit Convention
 
@@ -2016,15 +2092,15 @@ Before merging any feature or fix PR:
 
 ### Versioning Rules
 
-| Change Type                          | Version Bump |
-| ------------------------------------ | ------------ |
-| Bug fix (no API change)              | `patch`      |
-| New feature (backward compatible)    | `minor`      |
-| Breaking API change                  | `major`      |
-| New component added                  | `minor`      |
-| Component removed or renamed         | `major`      |
-| Design token value change            | `minor`      |
-| Design token name change             | `major`      |
+| Change Type                       | Version Bump |
+| --------------------------------- | ------------ |
+| Bug fix (no API change)           | `patch`      |
+| New feature (backward compatible) | `minor`      |
+| Breaking API change               | `major`      |
+| New component added               | `minor`      |
+| Component removed or renamed      | `major`      |
+| Design token value change         | `minor`      |
+| Design token name change          | `major`      |
 
 ---
 
@@ -2036,7 +2112,8 @@ Before merging any feature or fix PR:
 ### Component PR Checklist
 
 #### Code Quality
-- [ ] TypeScript strict — no `any`, no `@ts-ignore`
+
+- [ ] TypeScript strict — no `any`, no `@ts-ignore`; types in `.types.ts`; `@ts-expect-error` only with comment if unavoidable
 - [ ] `forwardRef` with `displayName` set
 - [ ] Props spread onto root element
 - [ ] `className` prop accepted and merged via `cn()`
@@ -2045,6 +2122,7 @@ Before merging any feature or fix PR:
 - [ ] All exports added to `packages/ui/src/index.ts`
 
 #### Customization
+
 - [ ] `className` prop merges correctly (last arg in `cn()`)
 - [ ] `classNames` prop exposed (compound components with ≥2 styled parts)
 - [ ] `data-*` attributes rendered for all stateful props/states
@@ -2053,6 +2131,7 @@ Before merging any feature or fix PR:
 - [ ] Slots / render props exposed for replaceable content areas
 
 #### Styling
+
 - [ ] Works in light mode
 - [ ] Works in dark mode
 - [ ] Responsive at 375px, 768px, 1440px
@@ -2060,6 +2139,7 @@ Before merging any feature or fix PR:
 - [ ] Animations respect `prefers-reduced-motion`
 
 #### Accessibility
+
 - [ ] Keyboard navigable (Tab, Enter, Space, Escape)
 - [ ] Focus indicator visible
 - [ ] ARIA attributes correct
@@ -2068,6 +2148,7 @@ Before merging any feature or fix PR:
 - [ ] axe-core test passes
 
 #### Testing
+
 - [ ] Vitest unit tests cover: render, props, variants, events, ref, className
 - [ ] Customization tests: className merge, classNames, data attrs, asChild, unstyled
 - [ ] axe-core a11y assertion included
@@ -2075,6 +2156,7 @@ Before merging any feature or fix PR:
 - [ ] Coverage thresholds maintained (90/85/90/90)
 
 #### Internationalization
+
 - [ ] Zero hardcoded user-facing strings
 - [ ] `labels` prop exposed with exported `DEFAULT_*_LABELS`
 - [ ] `useUILocale()` fallback integrated for labels resolution
@@ -2084,12 +2166,15 @@ Before merging any feature or fix PR:
 - [ ] Storybook story: Localized (at least 2 non-English locales)
 
 #### Documentation
+
 - [ ] JSDoc on component and all props
+- [ ] Inline comments on non-obvious logic (why, not what) so contributors can follow the code
 - [ ] Storybook stories: Default, AllVariants, Interactive, DarkMode, EdgeCases
 - [ ] Storybook stories: Customization (classNames, unstyled, themed)
 - [ ] Changeset file created (`pnpm changeset`)
 
 #### Performance
+
 - [ ] Component < 5KB gzipped
 - [ ] No unnecessary re-renders (React.memo if applicable)
 - [ ] Tree-shakeable (named exports only)
