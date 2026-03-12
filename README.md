@@ -46,9 +46,30 @@ A **framework-agnostic** React component library featuring:
 
 ---
 
+## 🌿 Branch model
+
+- **`main`** — Production (source of truth). Version & publish and GitHub Pages deploy run on push to `main`.
+- **`master`** — Release candidate. All contribution PRs target **`master`**. The only PR into `main` is **master → main**, opened by a maintainer when ready to release.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the step-by-step workflow.
+
+---
+
+## 📦 Releasing (npm)
+
+Releases are driven by [Changesets](https://github.com/changesets/changesets). **Flow:**
+
+1. Work lands on **`master`** via PRs (each PR that changes `packages/` must include a changeset — see CONTRIBUTING).
+2. When ready to release, a maintainer opens a PR **master → main** and merges.
+3. CI on push to `main` runs version & publish; pending changesets are consumed and packages are published to npm.
+
+See [.changeset/README.md](./.changeset/README.md) for changeset details.
+
+---
+
 ## 🤝 Contributing
 
-This project is not yet accepting external contributions. Once we reach a stable v1.0, contribution guidelines will be published.
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the branch workflow, how to open PRs to `master`, and when to add a changeset.
 
 ---
 

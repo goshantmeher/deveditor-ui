@@ -1,9 +1,11 @@
 name: CI
 
-# Run CI on every push (any branch). One run per push; PRs show the same check via the push that updates them.
-# Publish only on push to main.
+# Run on pull_request (one run per PR update). Run on push only to main (for version & publish after merge).
+# This avoids duplicate runs: pushing to a PR branch triggers only pull_request, not push.
 on:
   push:
+    branches: [main]
+  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -40,6 +42,33 @@ jobs:
 
       - name: Test
         run: pnpm run test
+
+  changeset_required:
+    name: Changeset required
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'master'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check changesets
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.sha }}
+        run: bash scripts/check-changesets.sh
+
+  main_only_from_master:
+    name: Main only from master
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    steps:
+      - name: Ensure only master can merge to main
+        run: |
+          if [ "${{ github.head_ref }}" != "master" ]; then
+            echo "::error::Only the branch 'master' can be merged into 'main'. This PR is from '${{ github.head_ref }}'."
+            exit 1
+          fi
 
   publish:
     name: Version & publish (npm)
