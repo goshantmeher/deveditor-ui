@@ -1,9 +1,10 @@
 name: CI
 
-# Run on push (any branch) and on pull_request. Publish only on push to main.
-# PRs to master require "Changeset required"; PRs to main require "Main only from master" (only master→main can merge).
+# Run on pull_request (one run per PR update). Run on push only to main (for version & publish after merge).
+# This avoids duplicate runs: pushing to a PR branch triggers only pull_request, not push.
 on:
   push:
+    branches: [main]
   pull_request:
 
 concurrency:
