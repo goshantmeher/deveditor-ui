@@ -1,25 +1,37 @@
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-links',
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook/addon-vitest")
   ],
+
   framework: {
-    name: '@storybook/react-vite',
+    name: getAbsolutePath("@storybook/react-vite"),
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+
   async viteFinal(config, { configType }) {
     const { mergeConfig } = await import('vite');
-    return mergeConfig(config, {
-      base: configType === 'PRODUCTION' ? '/deveditor-ui/' : '/',
-    });
-  },
+    // Vercel (ui.deveditor.io) serves at root; GitHub Pages at /deveditor-ui/
+    // Use STORYBOOK_BASE_PATH in Vercel if build runs in CI and you deploy to both.
+    const basePath =
+      process.env.STORYBOOK_BASE_PATH ??
+      (process.env.VERCEL ? '/' : undefined);
+    const base =
+      configType === 'PRODUCTION'
+        ? basePath ?? '/deveditor-ui/'
+        : '/';
+    return mergeConfig(config, { base });
+  }
 };
 
 export default config;
+
+function getAbsolutePath(value: string): any {
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+}
