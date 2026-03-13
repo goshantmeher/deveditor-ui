@@ -5,6 +5,19 @@
 - **All PRs target the `master` branch** (release candidate). Do not open PRs directly to `main`.
 - **Releases:** A maintainer opens a single PR **master → main** when ready to release. Only that PR can be merged into `main` (enforced by CI and branch protection).
 
+```mermaid
+flowchart LR
+  subgraph contribute [Contributing]
+    feature[Feature branch] -->|PR| master[master]
+  end
+  subgraph release [Releasing]
+    master -->|Push triggers CI| versionPR["Version PR\n(changeset-release/master)"]
+    versionPR -->|Merge| master
+    master -->|PR master → main| main[main]
+    main -->|Push runs publish| npm[npm publish]
+  end
+```
+
 ## Making a change
 
 1. **Create a branch** from `master`:
@@ -32,11 +45,10 @@
 
 ## Releasing (maintainers)
 
-1. When `master` is ready for a release, open a PR **master → main**.
-2. CI must pass, including the check **Main only from master** (only the `master` branch can target `main`).
-3. Merge the PR. CI on push to `main` will:
-   - Run version & publish: consume changesets, bump package versions, and publish to npm.
-   - Deploy Storybook to GitHub Pages (if configured).
+1. **Version PR:** CI creates or updates a “chore: version packages” PR from **changeset-release/master** into **master** whenever changes are pushed to `master`. Merge that PR into `master` when you want to bump versions and update changelogs.
+2. When `master` is ready for a release, open a PR **master → main**.
+3. CI must pass, including **Main only from master** (only the `master` branch can target `main`).
+4. Merge the PR. CI on push to `main` will run **publish** (`pnpm run release`: build and publish to npm) and deploy Storybook to GitHub Pages (if configured).
 
 ## References
 

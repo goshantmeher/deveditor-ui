@@ -1,10 +1,9 @@
 name: CI
 
-# Run on pull_request (one run per PR update). Run on push only to main (for version & publish after merge).
-# This avoids duplicate runs: pushing to a PR branch triggers only pull_request, not push.
+# Run on pull_request (all PRs). Run on push to main (publish) and master (version PR creation).
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
 
 concurrency:
@@ -59,28 +58,58 @@ jobs:
         run: bash scripts/check-changesets.sh
 
   main_only_from_master:
-    name: Main only from allowed branches
+    name: Main only from master
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
     steps:
-      - name: Ensure only master or changeset-release/main can merge to main
+      - name: Ensure only master can merge to main
         run: |
-          ALLOWED="master changeset-release/main"
-          if echo "$ALLOWED" | grep -qw "${{ github.head_ref }}"; then
-            echo "Branch '${{ github.head_ref }}' is allowed to merge into main."
-          else
-            echo "::error::Only 'master' or 'changeset-release/main' can be merged into 'main'. This PR is from '${{ github.head_ref }}'."
+          if [ "${{ github.head_ref }}" != "master" ]; then
+            echo "::error::Only the branch 'master' can be merged into 'main'. This PR is from '${{ github.head_ref }}'."
             exit 1
           fi
+          echo "Branch 'master' is allowed to merge into main."
+
+  version-pr:
+    name: Create/update version PR (master)
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create or update version PR
+        uses: changesets/action@v1
+        with:
+          version: pnpm run version-packages
+          publish: "true"
+          title: "chore: version packages"
+          commit: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
-    name: Version & publish (npm)
+    name: Publish (npm)
     needs: ci
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -98,13 +127,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Create Release PR or Publish
-        uses: changesets/action@v1
-        with:
-          version: pnpm run version-packages
-          publish: pnpm run release
-          title: "chore: version packages"
-          commit: "chore: version packages"
+      - name: Build and publish to npm
+        run: pnpm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
