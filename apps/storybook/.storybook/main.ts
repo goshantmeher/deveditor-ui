@@ -17,9 +17,16 @@ const config: StorybookConfig = {
 
   async viteFinal(config, { configType }) {
     const { mergeConfig } = await import('vite');
-    return mergeConfig(config, {
-      base: configType === 'PRODUCTION' ? '/deveditor-ui/' : '/',
-    });
+    // Vercel (ui.deveditor.io) serves at root; GitHub Pages at /deveditor-ui/
+    // Use STORYBOOK_BASE_PATH in Vercel if build runs in CI and you deploy to both.
+    const basePath =
+      process.env.STORYBOOK_BASE_PATH ??
+      (process.env.VERCEL ? '/' : undefined);
+    const base =
+      configType === 'PRODUCTION'
+        ? basePath ?? '/deveditor-ui/'
+        : '/';
+    return mergeConfig(config, { base });
   }
 };
 
