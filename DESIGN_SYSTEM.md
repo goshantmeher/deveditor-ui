@@ -42,7 +42,7 @@
 | **Component Base** | shadcn/ui                       | Styled Radix wrappers (internal only)     |
 | **Icons**          | Lucide React                    | Consistent, tree-shakeable icon library   |
 | **Monorepo**       | pnpm workspaces + Turborepo     | Package management and task orchestration |
-| **Docs**           | Storybook 8+                    | Interactive component documentation       |
+| **Docs**           | Storybook 10                    | Interactive component documentation       |
 | **Unit Tests**     | Vitest + React Testing Library  | Component logic & integration tests       |
 | **Visual Tests**   | Playwright                      | Screenshot regression & E2E testing       |
 | **A11y Tests**     | axe-core + Playwright           | Automated accessibility auditing          |
@@ -1359,6 +1359,10 @@ CI will **fail** if coverage drops below these thresholds.
 
 ## 📖 Storybook Standards
 
+We use **Storybook 10** with the React + Vite framework (`@storybook/react-vite`). Stories use the CSF3 format with `Meta` and `StoryObj` types from `@storybook/react`.
+
+**Note:** Storybook 10 is **ESM-only**. It no longer publishes CommonJS; this reduces install size (~29%) and keeps the distribution un-minified for easier debugging. The Storybook app and config (e.g. `.storybook/main.ts`) must use ESM (`import`/`export`, `import.meta`).
+
 ### Story Structure
 
 Every component must have a `.stories.tsx` file with:
@@ -1414,14 +1418,16 @@ export const AllVariants: Story = {
 };
 ```
 
-### Storybook Addons (Required)
+### Storybook 10 Addons
 
-| Addon                           | Purpose                           |
-| ------------------------------- | --------------------------------- |
-| `@storybook/addon-essentials`   | Controls, actions, docs, viewport |
-| `@storybook/addon-a11y`         | Accessibility panel in stories    |
-| `@storybook/addon-themes`       | Light/dark mode toggle            |
-| `@storybook/addon-interactions` | Interaction testing in browser    |
+| Addon                           | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
+| `@storybook/addon-docs`        | Auto-generated docs and MDX documentation |
+| `@storybook/addon-links`       | Link between stories and external URLs    |
+| `@storybook/addon-vitest`      | Run Vitest tests from within Storybook    |
+| `@storybook/addon-essentials`  | (Optional) Controls, actions, viewport    |
+| `@storybook/addon-a11y`        | (Optional) Accessibility panel in stories |
+| `@storybook/addon-themes`      | (Optional) Light/dark mode toggle         |
 
 ---
 
