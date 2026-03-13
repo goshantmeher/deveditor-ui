@@ -14,7 +14,7 @@ This repo uses [Changesets](https://github.com/changesets/changesets) for versio
 
 2. **Commit** the new file under `.changeset/*.md` with your PR.
 
-3. **Version PR:** CI (on push to `master`) creates or updates a “chore: version packages” PR targeting **master** (branch `changeset-release/master`). Merge that PR to apply version bumps and changelog updates. **Publish:** after merging **master → main**, CI on `main` runs `pnpm run release` (build + publish to npm).
+3. **Version PR:** CI (on push to `dev`) creates or updates a “chore: version packages” PR targeting **dev** (branch `changeset-release/dev`). Merge that PR into `dev` to apply version bumps and changelog updates. **Publish:** after merging **dev → master**, CI on `master` runs `pnpm run release` (build + publish to npm).
 
 ## Changelog format
 
