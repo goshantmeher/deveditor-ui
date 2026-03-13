@@ -2,7 +2,7 @@
 # Ensures PRs that change packages/ (published npm code) include a release changeset (.changeset/*.md, not README.md).
 # Option A: packages only — apps/ (e.g. Storybook) changes do not require a changeset.
 # Usage: from repo root, after checkout:
-#   BASE_REF=master HEAD_REF=HEAD ./scripts/check-changesets.sh
+#   BASE_REF=dev HEAD_REF=HEAD ./scripts/check-changesets.sh
 # Or in GitHub Actions: BASE_REF and HEAD_REF are set from the PR.
 
 set -e

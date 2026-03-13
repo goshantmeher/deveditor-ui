@@ -27,7 +27,7 @@
 - [x] **Task 1.4** — Write `.github/workflows/ci.yml`
   - [x] Linting (`eslint`) & type checking (`tsc --noEmit`)
   - [x] Build verification (`tsup` completes without errors)
-  - [x] Auto-publish to NPM on merge to `main` (using Changesets action)
+  - [x] Auto-publish to NPM on push to `master` (using Changesets action)
   - [x] Cache `node_modules` for faster CI runs
 
 - [x] **Task 1.5** — Set up Storybook + GitHub Pages deployment

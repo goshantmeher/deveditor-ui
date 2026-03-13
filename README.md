@@ -48,8 +48,8 @@ A **framework-agnostic** React component library featuring:
 
 ## 🌿 Branch model
 
-- **`main`** — Production (source of truth). Version & publish and GitHub Pages deploy run on push to `main`.
-- **`master`** — Release candidate. All contribution PRs target **`master`**. The only PR into `main` is **master → main**, opened by a maintainer when ready to release.
+- **`dev`** — Integration. All contribution PRs target **`dev`**. CI runs lint, typecheck, build, test and enforces changesets on PRs to `dev`.
+- **`master`** — Production (single source of truth). Version & publish and GitHub Pages deploy run on push to `master`. The only PR into `master` is **dev → master**, opened by a maintainer when ready to release.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the step-by-step workflow.
 
@@ -59,9 +59,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for the step-by-step workflow.
 
 Releases are driven by [Changesets](https://github.com/changesets/changesets). **Flow:**
 
-1. Work lands on **`master`** via PRs (each PR that changes `packages/` must include a changeset — see CONTRIBUTING).
-2. When ready to release, a maintainer opens a PR **master → main** and merges.
-3. CI on push to `main` runs version & publish; pending changesets are consumed and packages are published to npm.
+1. Work lands on **`dev`** via PRs (each PR that changes `packages/` must include a changeset — see CONTRIBUTING).
+2. Push to `dev` triggers the **version PR** (changeset-release/dev → dev); merge it to bump versions on `dev`.
+3. When ready to release, a maintainer opens a PR **dev → master** and merges. CI on push to `master` runs **publish** and packages are published to npm.
 
 See [.changeset/README.md](./.changeset/README.md) for changeset details.
 
@@ -69,7 +69,7 @@ See [.changeset/README.md](./.changeset/README.md) for changeset details.
 
 ## 🤝 Contributing
 
-Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the branch workflow, how to open PRs to `master`, and when to add a changeset.
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the branch workflow, how to open PRs to `dev`, and when to add a changeset.
 
 ---
 

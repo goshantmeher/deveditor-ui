@@ -1,0 +1,4 @@
+# Only these people can approve PRs (feature→dev and dev→master).
+# Replace with your GitHub usernames. For org repos use @org/username.
+# See .github/rulesets/README.md for details.
+* @goshantmeher
