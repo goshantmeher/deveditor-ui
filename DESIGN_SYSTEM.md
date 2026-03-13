@@ -2067,8 +2067,8 @@ interface ButtonProps {
 
 | Branch       | Purpose                              |
 | ------------ | ------------------------------------ |
-| `main`       | Production — auto-publishes to NPM   |
 | `dev`        | Integration — PR target for features |
+| `master`     | Production — auto-publishes to NPM   |
 | `feat/*`     | New component or feature             |
 | `fix/*`      | Bug fix                              |
 | `docs/*`     | Documentation only                   |

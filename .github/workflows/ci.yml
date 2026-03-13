@@ -1,9 +1,9 @@
 name: CI
 
-# Run on pull_request (all PRs). Run on push to main (publish) and master (version PR creation).
+# Run on pull_request (all PRs). Run on push to dev and master. Version PR runs on push to dev; publish runs on push to master.
 on:
   push:
-    branches: [main, master]
+    branches: [dev, master]
   pull_request:
 
 concurrency:
@@ -58,7 +58,7 @@ jobs:
   changeset_required:
     name: Changeset required
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.base_ref == 'master'
+    if: github.event_name == 'pull_request' && github.base_ref == 'dev'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,23 +70,23 @@ jobs:
           HEAD_REF: ${{ github.sha }}
         run: bash scripts/check-changesets.sh
 
-  main_only_from_master:
-    name: Main only from master
+  master_only_from_dev:
+    name: Master only from dev
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    if: github.event_name == 'pull_request' && github.base_ref == 'master'
     steps:
-      - name: Ensure only master can merge to main
+      - name: Ensure only dev can merge to master
         run: |
-          if [ "${{ github.head_ref }}" != "master" ]; then
-            echo "::error::Only the branch 'master' can be merged into 'main'. This PR is from '${{ github.head_ref }}'."
+          if [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "::error::Only the branch 'dev' can be merged into 'master'. This PR is from '${{ github.head_ref }}'."
             exit 1
           fi
-          echo "Branch 'master' is allowed to merge into main."
+          echo "Branch 'dev' is allowed to merge into master."
 
   version-pr:
-    name: Create/update version PR (master)
+    name: Create/update version PR (dev)
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
     permissions:
       contents: write
       pull-requests: write
@@ -124,7 +124,7 @@ jobs:
   publish:
     name: Publish (npm)
     needs: ci
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     permissions:
       contents: read
