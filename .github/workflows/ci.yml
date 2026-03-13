@@ -55,7 +55,13 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
           HEAD_REF: ${{ github.sha }}
-        run: bash scripts/check-changesets.sh
+          SKIP_FOR_VERSION_PR: ${{ github.head_ref == 'changeset-release/master' && 'true' || '' }}
+        run: |
+          if [ -n "$SKIP_FOR_VERSION_PR" ]; then
+            echo "Version PR (changeset-release/master) — changeset check not required."
+            exit 0
+          fi
+          bash scripts/check-changesets.sh
 
   main_only_from_master:
     name: Main only from master
